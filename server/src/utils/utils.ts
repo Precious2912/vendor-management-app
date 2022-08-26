@@ -8,7 +8,9 @@ export const registerSchema = Joi.object()
       .length(11)
       .pattern(/^[0-9]+$/)
       .required(),
-    password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+    password: Joi.string()
+      .regex(/^[a-zA-Z0-9]{3,30}$/)
+      .required(),
     confirm_password: Joi.ref("password"),
   })
   .with("password", "confirm_password");
