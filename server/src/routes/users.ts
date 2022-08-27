@@ -8,6 +8,6 @@ router.get("/", function (req: Request, res: Response, next: NextFunction) {
 });
 router.post("/register", RegisterUser);
 
-router.post("/login", LoginUser)
+router.post("/login", LoginUser);
 
 export default router;
