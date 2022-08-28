@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RegisterAdmin = void 0;
+exports.LoginAdmin = exports.RegisterAdmin = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
 const admin_1 = require("../models/admin");
@@ -54,3 +54,40 @@ async function RegisterAdmin(req, res, next) {
     }
 }
 exports.RegisterAdmin = RegisterAdmin;
+async function LoginAdmin(req, res, next) {
+    const id = (0, uuid_1.v4)();
+    try {
+        const validationResult = utils_1.adminLoginSchema.validate(req.body, utils_1.options);
+        if (validationResult.error) {
+            return res.status(400).json({
+                Error: validationResult.error.details[0].message,
+            });
+        }
+        const Admin = (await admin_1.AdminInstance.findOne({
+            where: { email: req.body.email },
+        }));
+        const { id } = Admin;
+        const token = (0, utils_1.generateToken)({ id });
+        const validAdmin = await bcryptjs_1.default.compare(req.body.password, Admin.password);
+        if (!validAdmin) {
+            res.status(401).json({
+                message: "Password do not match",
+            });
+        }
+        if (validAdmin) {
+            res.status(200).json({
+                message: "Successfully logged in",
+                token,
+                Admin,
+            });
+        }
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({
+            msg: "failed to login",
+            route: "/login",
+        });
+    }
+}
+exports.LoginAdmin = LoginAdmin;

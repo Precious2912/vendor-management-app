@@ -11,4 +11,5 @@ router.get("/", function (req, res, next) {
     res.send("respond with a resource");
 });
 router.post("/register", adminController_1.RegisterAdmin);
+router.post("/login", adminController_1.LoginAdmin);
 exports.default = router;

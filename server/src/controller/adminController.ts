@@ -1,6 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { adminRegisterSchema, options } from "../utils/utils";
+import {
+  adminRegisterSchema,
+  adminLoginSchema,
+  options,
+  generateToken,
+} from "../utils/utils";
 import { AdminInstance } from "../models/admin";
 import bcrypt from "bcryptjs";
 
@@ -51,6 +56,50 @@ export async function RegisterAdmin(
     res.status(500).json({
       msg: "failed to register",
       route: "/register",
+    });
+  }
+}
+
+export async function LoginAdmin(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const id = uuidv4();
+  try {
+    const validationResult = adminLoginSchema.validate(req.body, options);
+    if (validationResult.error) {
+      return res.status(400).json({
+        Error: validationResult.error.details[0].message,
+      });
+    }
+    const Admin = (await AdminInstance.findOne({
+      where: { email: req.body.email },
+    })) as unknown as { [key: string]: string };
+
+    const { id } = Admin;
+    const token = generateToken({ id });
+    const validAdmin = await bcrypt.compare(req.body.password, Admin.password);
+
+    if (!validAdmin) {
+      res.status(401).json({
+        message: "Password do not match",
+      });
+    }
+
+    if (validAdmin) {
+      res.status(200).json({
+        message: "Successfully logged in",
+        token,
+        Admin,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      msg: "failed to login",
+      route: "/login",
     });
   }
 }

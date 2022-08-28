@@ -11,4 +11,5 @@ router.get("/", function (req, res, next) {
     res.send("respond with a resource");
 });
 router.post("/register", vendorController_1.RegisterVendor);
+router.post("/login", vendorController_1.LoginVendor);
 exports.default = router;

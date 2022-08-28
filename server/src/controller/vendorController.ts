@@ -1,6 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { vendorsRegisterSchema, options } from "../utils/utils";
+import {
+  vendorsRegisterSchema,
+  vendorLoginSchema,
+  generateToken,
+  options,
+} from "../utils/utils";
 import { VendorsInstance } from "../models/vendors";
 import bcrypt from "bcryptjs";
 
@@ -55,6 +60,52 @@ export async function RegisterVendor(
     res.status(500).json({
       msg: "failed to register",
       route: "/register",
+    });
+  }
+}
+export async function LoginVendor(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const id = uuidv4();
+  try {
+    const validationResult = vendorLoginSchema.validate(req.body, options);
+    if (validationResult.error) {
+      return res.status(400).json({
+        Error: validationResult.error.details[0].message,
+      });
+    }
+    const Vendor = (await VendorsInstance.findOne({
+      where: { email: req.body.email },
+    })) as unknown as { [key: string]: string };
+
+    const { id } = Vendor;
+    const token = generateToken({ id });
+    const validVendor = await bcrypt.compare(
+      req.body.password,
+      Vendor.password
+    );
+
+    if (!validVendor) {
+      res.status(401).json({
+        message: "Password do not match",
+      });
+    }
+
+    if (validVendor) {
+      res.status(200).json({
+        message: "Successfully logged in",
+        token,
+        Vendor,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      msg: "failed to login",
+      route: "/login",
     });
   }
 }
