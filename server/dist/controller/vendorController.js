@@ -3,21 +3,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginUser = exports.RegisterUser = void 0;
+exports.LoginVendor = exports.RegisterVendor = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
-const users_1 = require("../models/users");
+const vendors_1 = require("../models/vendors");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-async function RegisterUser(req, res, next) {
+async function RegisterVendor(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
-        const validationResult = utils_1.registerSchema.validate(req.body, utils_1.options);
+        const validationResult = utils_1.vendorsRegisterSchema.validate(req.body, utils_1.options);
         if (validationResult.error) {
             return res.status(400).json({
                 Error: validationResult.error.details[0].message,
             });
         }
-        const duplicatEmail = await users_1.UserInstance.findOne({
+        const duplicatEmail = await vendors_1.VendorsInstance.findOne({
             where: { email: req.body.email },
         });
         if (duplicatEmail) {
@@ -25,7 +25,7 @@ async function RegisterUser(req, res, next) {
                 msg: "Email is used, please enter another email",
             });
         }
-        const duplicatePhone = await users_1.UserInstance.findOne({
+        const duplicatePhone = await vendors_1.VendorsInstance.findOne({
             where: { phoneNumber: req.body.phoneNumber },
         });
         if (duplicatePhone) {
@@ -34,12 +34,15 @@ async function RegisterUser(req, res, next) {
             });
         }
         const passwordHash = await bcryptjs_1.default.hash(req.body.password, 8);
-        const record = await users_1.UserInstance.create({
+        const record = await vendors_1.VendorsInstance.create({
             id: id,
-            fullName: req.body.fullName,
+            name: req.body.name,
+            ownedBy: req.body.ownedBy,
+            address: req.body.address,
             email: req.body.email,
             phoneNumber: req.body.phoneNumber,
             password: passwordHash,
+            verified: false,
         });
         res.status(200).json({
             msg: "You have successfully registered",
@@ -47,34 +50,35 @@ async function RegisterUser(req, res, next) {
         });
     }
     catch (err) {
+        console.log(err);
         res.status(500).json({
             msg: "failed to register",
             route: "/register",
         });
     }
 }
-exports.RegisterUser = RegisterUser;
-async function LoginUser(req, res, next) {
+exports.RegisterVendor = RegisterVendor;
+async function LoginVendor(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
-        const validationResult = utils_1.loginSchema.validate(req.body, utils_1.options);
+        const validationResult = utils_1.vendorLoginSchema.validate(req.body, utils_1.options);
         if (validationResult.error) {
             return res.status(400).json({
                 Error: validationResult.error.details[0].message,
             });
         }
-        const User = (await users_1.UserInstance.findOne({
+        const Vendor = (await vendors_1.VendorsInstance.findOne({
             where: { email: req.body.email },
         }));
-        const { id } = User;
+        const { id } = Vendor;
         const token = (0, utils_1.generateToken)({ id });
-        const validUser = await bcryptjs_1.default.compare(req.body.password, User.password);
-        if (!validUser) {
+        const validVendor = await bcryptjs_1.default.compare(req.body.password, Vendor.password);
+        if (!validVendor) {
             res.status(401).json({
                 message: "Password do not match",
             });
         }
-        if (validUser) {
+        if (validVendor) {
             res.cookie("authorization", token, {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 24,
@@ -86,7 +90,7 @@ async function LoginUser(req, res, next) {
             res.status(200).json({
                 message: "Successfully logged in",
                 token,
-                User,
+                Vendor,
             });
         }
     }
@@ -98,4 +102,4 @@ async function LoginUser(req, res, next) {
         });
     }
 }
-exports.LoginUser = LoginUser;
+exports.LoginVendor = LoginVendor;

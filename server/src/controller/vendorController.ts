@@ -1,28 +1,28 @@
 import express, { Request, Response, NextFunction } from "express";
 import { v4 as uuidv4 } from "uuid";
 import {
-  registerSchema,
-  options,
-  loginSchema,
+  vendorsRegisterSchema,
+  vendorLoginSchema,
   generateToken,
+  options,
 } from "../utils/utils";
-import { UserInstance } from "../models/users";
+import { VendorsInstance } from "../models/vendors";
 import bcrypt from "bcryptjs";
 
-export async function RegisterUser(
+export async function RegisterVendor(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   const id = uuidv4();
   try {
-    const validationResult = registerSchema.validate(req.body, options);
+    const validationResult = vendorsRegisterSchema.validate(req.body, options);
     if (validationResult.error) {
       return res.status(400).json({
         Error: validationResult.error.details[0].message,
       });
     }
-    const duplicatEmail = await UserInstance.findOne({
+    const duplicatEmail = await VendorsInstance.findOne({
       where: { email: req.body.email },
     });
     if (duplicatEmail) {
@@ -31,7 +31,7 @@ export async function RegisterUser(
       });
     }
 
-    const duplicatePhone = await UserInstance.findOne({
+    const duplicatePhone = await VendorsInstance.findOne({
       where: { phoneNumber: req.body.phoneNumber },
     });
 
@@ -41,53 +41,59 @@ export async function RegisterUser(
       });
     }
     const passwordHash = await bcrypt.hash(req.body.password, 8);
-    const record = await UserInstance.create({
+    const record = await VendorsInstance.create({
       id: id,
-      fullName: req.body.fullName,
+      name: req.body.name,
+      ownedBy: req.body.ownedBy,
+      address: req.body.address,
       email: req.body.email,
       phoneNumber: req.body.phoneNumber,
       password: passwordHash,
+      verified: false,
     });
     res.status(200).json({
       msg: "You have successfully registered",
       record: record,
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       msg: "failed to register",
       route: "/register",
     });
   }
 }
-
-export async function LoginUser(
+export async function LoginVendor(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   const id = uuidv4();
   try {
-    const validationResult = loginSchema.validate(req.body, options);
+    const validationResult = vendorLoginSchema.validate(req.body, options);
     if (validationResult.error) {
       return res.status(400).json({
         Error: validationResult.error.details[0].message,
       });
     }
-    const User = (await UserInstance.findOne({
+    const Vendor = (await VendorsInstance.findOne({
       where: { email: req.body.email },
     })) as unknown as { [key: string]: string };
 
-    const { id } = User;
+    const { id } = Vendor;
     const token = generateToken({ id });
-    const validUser = await bcrypt.compare(req.body.password, User.password);
+    const validVendor = await bcrypt.compare(
+      req.body.password,
+      Vendor.password
+    );
 
-    if (!validUser) {
+    if (!validVendor) {
       res.status(401).json({
         message: "Password do not match",
       });
     }
 
-    if (validUser) {
+    if (validVendor) {
       res.cookie("authorization", token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24,
@@ -99,7 +105,7 @@ export async function LoginUser(
       res.status(200).json({
         message: "Successfully logged in",
         token,
-        User,
+        Vendor,
       });
     }
   } catch (err) {
