@@ -3,8 +3,12 @@ import React from "react";
 const Hero = () => {
   return (
     <div className="hero">
-      <h2>Welcome to Sign Chow</h2>
-      <h3>Book down your meals with one Click</h3>
+      <div className="texts">
+        <h1>Welcome to Sapa Kitchen</h1>
+        <h3>
+          Book or buy your meals in <span>ONE MINUTE</span>
+        </h3>
+      </div>
     </div>
   );
 };

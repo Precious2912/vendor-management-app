@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../api/axios";
 import validation from "../utils/validation";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { UseAuth } from "../hooks/UseAuth";
 
 const Form = ({ loginPage, signup }) => {
@@ -15,10 +15,12 @@ const Form = ({ loginPage, signup }) => {
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  // console.log(UseAuth());
   const { login } = UseAuth();
 
-  const handleSubmit = (e) => {
+  const signUpFunction = () => {};
+  const loginFunction = () => {};
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors(validation(formData));
     if (Object.keys(errors).length === 0) {
@@ -80,7 +82,7 @@ const Form = ({ loginPage, signup }) => {
           <label htmlFor="email"></label>
           <input
             type="email"
-            placeholder="email"
+            placeholder="Email"
             name="email"
             onChange={(e) =>
               setFormData({
@@ -148,6 +150,21 @@ const Form = ({ loginPage, signup }) => {
       <button type="submit" className="action-btn" onClick={handleSubmit}>
         {signup ? "Sign Up" : "Login"}
       </button>
+      {signup ? (
+        <h4>
+          Already have an account? Login in{" "}
+          <Link to="/login" className="link">
+            HERE
+          </Link>
+        </h4>
+      ) : (
+        <h4>
+          Don't have an account? Sign Up in{" "}
+          <Link to="/register" className="link">
+            HERE{" "}
+          </Link>
+        </h4>
+      )}
     </div>
   );
 };
