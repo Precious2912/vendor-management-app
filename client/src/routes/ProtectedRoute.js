@@ -1,15 +1,14 @@
-import React from 'react'
-import { useLocation, Navigate, Outlet } from 'react-router-dom'
-import { UseAuth } from '../hooks/UseAuth'
+import React from "react";
+import { useLocation, Navigate, Outlet } from "react-router-dom";
+import { UseAuth } from "../hooks/UseAuth";
 
 export const ProtectedRoute = () => {
-    const location = useLocation()
-    const {loggedIn} = UseAuth();
-    
+  const location = useLocation();
+  const { loggedIn } = UseAuth();
+
   return loggedIn ? (
-    <Outlet /> 
+    <Outlet />
   ) : (
-    <Navigate to='/register' state={{from: location}} replace/>
-  )
-    
-}
+    <Navigate to="/login" state={{ from: location }} replace />
+  );
+};
