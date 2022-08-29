@@ -74,6 +74,10 @@ export const vendorsRegisterSchema = Joi.object()
   })
   .with("password", "confirm_password");
 
+export const verifyVendorSchema = Joi.object().keys({
+  verified: Joi.boolean(),
+});
+
 export const options = {
   abortEarly: false,
   errors: {

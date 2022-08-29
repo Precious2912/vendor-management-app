@@ -5,9 +5,11 @@ import {
   adminLoginSchema,
   options,
   generateToken,
+  verifyVendorSchema,
 } from "../utils/utils";
 import { AdminInstance } from "../models/admin";
 import bcrypt from "bcryptjs";
+import { VendorsInstance } from "../models/vendors";
 
 export async function RegisterAdmin(
   req: Request,
@@ -88,6 +90,14 @@ export async function LoginAdmin(
     }
 
     if (validAdmin) {
+      res.cookie("authorization", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      });
+      res.cookie("id", id, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      });
       res.status(200).json({
         message: "Successfully logged in",
         token,
@@ -100,6 +110,66 @@ export async function LoginAdmin(
     res.status(500).json({
       msg: "failed to login",
       route: "/login",
+    });
+  }
+}
+
+export async function verifyVendor(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id } = req.params;
+    const { verified } = req.body;
+    const validationResult = verifyVendorSchema.validate(req.body, options);
+    if (validationResult.error) {
+      return res.status(400).json({
+        Error: validationResult.error.details[0].message,
+      });
+    }
+
+    const record = await VendorsInstance.findOne({ where: { id } });
+    if (!record) {
+      return res.status(404).json({
+        Error: "Cannot find existing course",
+      });
+    }
+    const updatedrecord = await record.update({
+      verified: verified,
+    });
+    res.status(200).json({
+      message: "You have successfully verified Vendor",
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: "failed to update",
+      route: "/verifyvendor/:id",
+    });
+  }
+}
+
+export async function removeVendor(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id } = req.params;
+    const record = await VendorsInstance.findOne({ where: { id } });
+    if (!record) {
+      return res.status(404).json({
+        msg: "Cannot find vendor",
+      });
+    }
+    const deletedRecord = await record.destroy();
+    res.status(200).json({
+      message: "You have successfully removed this vendor",
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: "failed to delete",
+      route: "/delete/:id",
     });
   }
 }

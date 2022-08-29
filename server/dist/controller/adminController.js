@@ -3,11 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginAdmin = exports.RegisterAdmin = void 0;
+exports.removeVendor = exports.verifyVendor = exports.LoginAdmin = exports.RegisterAdmin = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
 const admin_1 = require("../models/admin");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const vendors_1 = require("../models/vendors");
 async function RegisterAdmin(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
@@ -75,6 +76,14 @@ async function LoginAdmin(req, res, next) {
             });
         }
         if (validAdmin) {
+            res.cookie("authorization", token, {
+                httpOnly: true,
+                maxAge: 1000 * 60 * 60 * 24,
+            });
+            res.cookie("id", id, {
+                httpOnly: true,
+                maxAge: 1000 * 60 * 60 * 24,
+            });
             res.status(200).json({
                 message: "Successfully logged in",
                 token,
@@ -91,3 +100,56 @@ async function LoginAdmin(req, res, next) {
     }
 }
 exports.LoginAdmin = LoginAdmin;
+async function verifyVendor(req, res, next) {
+    try {
+        const { id } = req.params;
+        const { verified } = req.body;
+        const validationResult = utils_1.verifyVendorSchema.validate(req.body, utils_1.options);
+        if (validationResult.error) {
+            return res.status(400).json({
+                Error: validationResult.error.details[0].message,
+            });
+        }
+        const record = await vendors_1.VendorsInstance.findOne({ where: { id } });
+        if (!record) {
+            return res.status(404).json({
+                Error: "Cannot find existing course",
+            });
+        }
+        const updatedrecord = await record.update({
+            verified: verified,
+        });
+        res.status(200).json({
+            message: "You have successfully verified Vendor",
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: "failed to update",
+            route: "/verifyvendor/:id",
+        });
+    }
+}
+exports.verifyVendor = verifyVendor;
+async function removeVendor(req, res, next) {
+    try {
+        const { id } = req.params;
+        const record = await vendors_1.VendorsInstance.findOne({ where: { id } });
+        if (!record) {
+            return res.status(404).json({
+                msg: "Cannot find vendor",
+            });
+        }
+        const deletedRecord = await record.destroy();
+        res.status(200).json({
+            message: "You have successfully removed this vendor",
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: "failed to delete",
+            route: "/delete/:id",
+        });
+    }
+}
+exports.removeVendor = removeVendor;

@@ -6,10 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const adminController_1 = require("../controller/adminController");
+const auth_1 = require("../middleware/auth");
 /* GET admin listing. */
 router.get("/", function (req, res, next) {
     res.send("respond with a resource");
 });
 router.post("/register", adminController_1.RegisterAdmin);
 router.post("/login", adminController_1.LoginAdmin);
+router.patch("/verifyvendor/:id", auth_1.authAdmin, adminController_1.verifyVendor);
 exports.default = router;
