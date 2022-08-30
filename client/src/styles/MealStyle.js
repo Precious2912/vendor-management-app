@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
 export const MealStyle = styled.div`
-  /* border: 1px solid red; */
-  padding: 0rem 5rem;
+  margin: 2rem 5rem;
+  padding-bottom: 4rem;
+
+  h3 {
+    text-align: center;
+    text-transform: uppercase;
+  }
 `;
