@@ -73,6 +73,22 @@ export const vendorsRegisterSchema = Joi.object()
     confirm_password: Joi.ref("password"),
   })
   .with("password", "confirm_password");
+export const createMenuSchema = Joi.object().keys({
+  name: Joi.string().required(),
+  description: Joi.string().required(),
+  image: Joi.string().required(),
+  category: Joi.string().required(),
+  premium: Joi.boolean().required(),
+  price: Joi.number().required(),
+  vendorId: Joi.string().required(),
+});
+export const createOrdersSchema = Joi.object().keys({
+  userId: Joi.string().required(),
+  foodId: Joi.string().required(),
+  vendorId: Joi.string().required(),
+  comments: Joi.string().required(),
+  orderDate: Joi.date().required(),
+});
 
 export const verifyVendorSchema = Joi.object().keys({
   verified: Joi.boolean(),

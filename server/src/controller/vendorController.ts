@@ -4,10 +4,49 @@ import {
   vendorsRegisterSchema,
   vendorLoginSchema,
   generateToken,
+  createMenuSchema,
   options,
 } from "../utils/utils";
 import { VendorsInstance } from "../models/vendors";
+import { MenuInstance } from "../models/menu";
 import bcrypt from "bcryptjs";
+
+export async function AddFoodToMenu(
+  req: Request | any,
+  res: Response,
+  next: NextFunction
+) {
+  const id = uuidv4();
+  try {
+    const verified = req.user;
+    const validationResult = createMenuSchema.validate(req.body, options);
+    if (validationResult.error) {
+      return res.status(400).json({
+        Error: validationResult.error.details[0].message,
+      });
+    }
+    const record = await MenuInstance.create({
+      id: id,
+      name: req.body.name,
+      description: req.body.description,
+      image: req.body.image,
+      category: req.body.category,
+      premium: req.body.premium,
+      price: req.body.price,
+      vendorId: req.body.vendorId,
+    });
+
+    res.status(201).json({
+      msg: "You have successfully added a food to the menu",
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      msg: "failed to create",
+      route: "/addfoodtomenu",
+    });
+  }
+}
 
 export async function RegisterVendor(
   req: Request,
@@ -51,7 +90,7 @@ export async function RegisterVendor(
       password: passwordHash,
       verified: false,
     });
-    res.status(200).json({
+    res.status(201).json({
       msg: "You have successfully registered",
       record: record,
     });
@@ -63,6 +102,7 @@ export async function RegisterVendor(
     });
   }
 }
+
 export async function LoginVendor(
   req: Request,
   res: Response,
@@ -102,7 +142,7 @@ export async function LoginVendor(
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24,
       });
-      res.status(200).json({
+      res.status(201).json({
         message: "Successfully logged in",
         token,
         Vendor,
