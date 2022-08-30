@@ -3,11 +3,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginVendor = exports.RegisterVendor = void 0;
+exports.LoginVendor = exports.RegisterVendor = exports.AddFoodToMenu = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
 const vendors_1 = require("../models/vendors");
+const menu_1 = require("../models/menu");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+async function AddFoodToMenu(req, res, next) {
+    const id = (0, uuid_1.v4)();
+    try {
+        const verified = req.user;
+        const validationResult = utils_1.createMenuSchema.validate(req.body, utils_1.options);
+        if (validationResult.error) {
+            return res.status(400).json({
+                Error: validationResult.error.details[0].message,
+            });
+        }
+        const record = await menu_1.MenuInstance.create({
+            id: id,
+            name: req.body.name,
+            description: req.body.description,
+            image: req.body.image,
+            category: req.body.category,
+            premium: req.body.premium,
+            price: req.body.price,
+            vendorId: req.body.vendorId,
+        });
+        res.status(201).json({
+            msg: "You have successfully added a food to the menu",
+            record: record,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            msg: "failed to create",
+            route: "/addfoodtomenu",
+        });
+    }
+}
+exports.AddFoodToMenu = AddFoodToMenu;
 async function RegisterVendor(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
@@ -44,7 +78,7 @@ async function RegisterVendor(req, res, next) {
             password: passwordHash,
             verified: false,
         });
-        res.status(200).json({
+        res.status(201).json({
             msg: "You have successfully registered",
             record: record,
         });
@@ -87,7 +121,7 @@ async function LoginVendor(req, res, next) {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 24,
             });
-            res.status(200).json({
+            res.status(201).json({
                 message: "Successfully logged in",
                 token,
                 Vendor,

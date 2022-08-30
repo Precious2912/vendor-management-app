@@ -42,7 +42,7 @@ async function RegisterAdmin(req, res, next) {
             phoneNumber: req.body.phoneNumber,
             password: passwordHash,
         });
-        res.status(200).json({
+        res.status(201).json({
             msg: "You have successfully registered",
             record: record,
         });
@@ -84,7 +84,7 @@ async function LoginAdmin(req, res, next) {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 24,
             });
-            res.status(200).json({
+            res.status(201).json({
                 message: "Successfully logged in",
                 token,
                 Admin,
@@ -119,7 +119,7 @@ async function verifyVendor(req, res, next) {
         const updatedrecord = await record.update({
             verified: verified,
         });
-        res.status(200).json({
+        res.status(201).json({
             message: "You have successfully verified Vendor",
         });
     }

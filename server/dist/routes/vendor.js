@@ -12,4 +12,5 @@ router.get("/", function (req, res, next) {
 });
 router.post("/register", vendorController_1.RegisterVendor);
 router.post("/login", vendorController_1.LoginVendor);
+router.post("/addfood", vendorController_1.AddFoodToMenu);
 exports.default = router;
