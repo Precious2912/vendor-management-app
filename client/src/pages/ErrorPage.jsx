@@ -1,10 +1,6 @@
 import React from "react";
+import { ErrorStyle } from "../styles/Error";
 
 export const ErrorPage = () => {
-  return (
-    <div className="container">
-      <h1>404</h1>
-      <h2>Page not found</h2>
-    </div>
-  );
+  return <ErrorStyle>Oops! 404 ERROR!</ErrorStyle>;
 };

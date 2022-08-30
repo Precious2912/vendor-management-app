@@ -1,5 +1,11 @@
 import React from "react";
+import Header from "../components/Header";
+import { HomeStyle } from "../styles/HomeStyle";
 
 export const HomePage = () => {
-  return <div>Welcome to Home Page</div>;
+  return (
+    <HomeStyle>
+      <Header />
+    </HomeStyle>
+  );
 };
