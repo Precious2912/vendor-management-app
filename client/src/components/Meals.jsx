@@ -3,10 +3,10 @@ import { GridContainer } from "../styles/GridContainer";
 import { MealStyle } from "../styles/MealStyle";
 import MealCard from "./MealCard";
 
-const Meal = ({ breakfast, lunch }) => {
+const Meals = ({ breakfast, premiumBreakfast, lunch, premiumLunch }) => {
   return (
     <MealStyle>
-      <h3>{breakfast ? "Breakfast" : "Lunch"}</h3>
+      <h3>{breakfast || premiumBreakfast ? "Breakfast" : "Lunch"}</h3>
       <GridContainer>
         <MealCard />
         <MealCard />
@@ -16,4 +16,4 @@ const Meal = ({ breakfast, lunch }) => {
   );
 };
 
-export default Meal;
+export default Meals;
