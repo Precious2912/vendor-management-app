@@ -3,8 +3,18 @@ import axios from "../api/axios";
 import validation from "../utils/validation";
 import { useNavigate, Link } from "react-router-dom";
 import { UseAuth } from "../hooks/UseAuth";
+import { FormStyle } from "../styles/FormStyle";
 
-const Form = ({ loginPage, signup }) => {
+const Form = ({
+  signIn,
+  signup,
+  UserLogin,
+  UserSignup,
+  AdminSignup,
+  AdminLogin,
+  VendorLogin,
+  VendorSignup,
+}) => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -17,14 +27,14 @@ const Form = ({ loginPage, signup }) => {
   const navigate = useNavigate();
   const { login } = UseAuth();
 
-  const signUpFunction = () => {};
-  const loginFunction = () => {};
+  // useEffect(() => {
+  //   setErrors(validation(formData));
+  // }, [formData]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setErrors(validation(formData));
     if (Object.keys(errors).length === 0) {
-      if (loginPage) {
+      if (UserLogin) {
         axios
           .post("/users/login", {
             email: formData.email,
@@ -40,7 +50,7 @@ const Form = ({ loginPage, signup }) => {
           .catch((err) => {
             console.log(err);
           });
-      } else {
+      } else if (UserSignup) {
         axios
           .post("/users/register", formData)
           .then((res) => {
@@ -52,14 +62,34 @@ const Form = ({ loginPage, signup }) => {
           .catch((err) => {
             console.log(err);
           });
+      } else if (AdminSignup) {
+        // admin signup
+      } else if (AdminLogin) {
+        // admin login
+      } else if (VendorLogin) {
+        // vendor login
+      } else if (VendorSignup) {
+        // vendor signup
       }
     }
   };
 
   return (
-    <div className="main">
-      <h2>{loginPage ? "Log In" : "Sign Up"}</h2>
-      <form action="">
+    <FormStyle onSubmit={handleSubmit}>
+      <h2>
+        {UserLogin
+          ? "Log In"
+          : UserSignup
+          ? "Sign Up"
+          : AdminSignup
+          ? "Sign Up as an Admin"
+          : AdminLogin
+          ? "Login as an Admin"
+          : VendorLogin
+          ? "Login as a Vendor"
+          : "Sign Up as a Vendor"}
+      </h2>
+      <form onSubmit={handleSubmit}>
         {signup && (
           <div>
             <label htmlFor="fullName"></label>
@@ -146,26 +176,49 @@ const Form = ({ loginPage, signup }) => {
             )}
           </div>
         )}
+        <button type="submit" className="action-btn">
+          {signup ? "Sign Up" : "Login"}
+        </button>
       </form>
-      <button type="submit" className="action-btn" onClick={handleSubmit}>
-        {signup ? "Sign Up" : "Login"}
-      </button>
+
       {signup ? (
         <h4>
-          Already have an account? Login in{" "}
-          <Link to="/login" className="link">
+          Already have an account? Login{" "}
+          <Link
+            to={
+              UserSignup
+                ? "/login"
+                : AdminSignup
+                ? "/admin/login"
+                : VendorSignup
+                ? "/vendor/login"
+                : ""
+            }
+            className="link"
+          >
             HERE
           </Link>
         </h4>
       ) : (
         <h4>
-          Don't have an account? Sign Up in{" "}
-          <Link to="/register" className="link">
+          Don't have an account? Sign Up{" "}
+          <Link
+            to={
+              UserLogin
+                ? "/register"
+                : AdminLogin
+                ? "/admin/register"
+                : VendorLogin
+                ? "/vendor/register"
+                : ""
+            }
+            className="link"
+          >
             HERE{" "}
           </Link>
         </h4>
       )}
-    </div>
+    </FormStyle>
   );
 };
 
