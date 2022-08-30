@@ -8,7 +8,7 @@ import { HomeStyle } from "../styles/HomeStyle";
 export const HomePage = () => {
   return (
     <HomeStyle>
-      <Header />
+      <Header home/>
       <FilterToggle home />
       <DateNow />
       <Meal breakfast />

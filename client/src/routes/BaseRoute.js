@@ -9,6 +9,7 @@ import AdminLogin from "../pages/AdminLogin";
 import AdminRegister from "../pages/AdminRegister";
 import VendorRegister from "../pages/VendorRegister";
 import VendorLogin from "../pages/VendorLogin";
+import { AdminDashboard  } from "../pages/AdminDashboard";
 
 export const BaseRoute = () => {
   return (
@@ -20,6 +21,7 @@ export const BaseRoute = () => {
       <Route path="/admin/register" element={<AdminRegister />}></Route>
       <Route path="/vendor/register" element={<VendorRegister />}></Route>
       <Route path="/vendor/login" element={<VendorLogin />}></Route>
+      <Route path="admin/dashboard" element={<AdminDashboard />}></Route>
 
       <Route path="/" element={<HomePage />} />
 
