@@ -1,20 +1,21 @@
 import React from "react";
-import Hero from "../components/Hero";
-// import "../styles/register.css";
 import Form from "../components/Form";
-import { Container } from "../styles/RegisterStyle";
+import Hero from "../components/Hero";
 import { HeroStyle } from "../styles/Hero";
 import { RegisterBodyStyle } from "../styles/RegisterBody";
-export const RegisterPage = () => {
+import { Container } from "../styles/RegisterStyle";
+
+const VendorRegister = () => {
   return (
     <RegisterBodyStyle>
       <Container>
         <HeroStyle>
           <Hero />
         </HeroStyle>
-        <Form signup UserSignup />
+        <Form VendorSignup signup />
       </Container>
     </RegisterBodyStyle>
   );
 };
 
+export default VendorRegister;
