@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.options = exports.verifyVendorSchema = exports.vendorsRegisterSchema = exports.adminRegisterSchema = exports.generateToken = exports.vendorLoginSchema = exports.adminLoginSchema = exports.loginSchema = exports.registerSchema = void 0;
+exports.options = exports.verifyVendorSchema = exports.createOrdersSchema = exports.createMenuSchema = exports.vendorsRegisterSchema = exports.adminRegisterSchema = exports.generateToken = exports.vendorLoginSchema = exports.adminLoginSchema = exports.loginSchema = exports.registerSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.registerSchema = joi_1.default.object()
@@ -74,6 +74,22 @@ exports.vendorsRegisterSchema = joi_1.default.object()
     confirm_password: joi_1.default.ref("password"),
 })
     .with("password", "confirm_password");
+exports.createMenuSchema = joi_1.default.object().keys({
+    name: joi_1.default.string().required(),
+    description: joi_1.default.string().required(),
+    image: joi_1.default.string().required(),
+    category: joi_1.default.string().required(),
+    premium: joi_1.default.boolean().required(),
+    price: joi_1.default.number().required(),
+    vendorId: joi_1.default.string().required(),
+});
+exports.createOrdersSchema = joi_1.default.object().keys({
+    userId: joi_1.default.string().required(),
+    foodId: joi_1.default.string().required(),
+    vendorId: joi_1.default.string().required(),
+    comments: joi_1.default.string().required(),
+    orderDate: joi_1.default.date().required(),
+});
 exports.verifyVendorSchema = joi_1.default.object().keys({
     verified: joi_1.default.boolean(),
 });
