@@ -9,6 +9,7 @@ const utils_1 = require("../utils/utils");
 const vendors_1 = require("../models/vendors");
 const menu_1 = require("../models/menu");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const orders_1 = require("../models/orders");
 async function AddFoodToMenu(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
@@ -46,11 +47,14 @@ async function AddFoodToMenu(req, res, next) {
 exports.AddFoodToMenu = AddFoodToMenu;
 async function getAllMenu(req, res, next) {
     try {
-        //const userId = req.cookies.id;
+        //const vendorId = req.cookies.id;
         const vendorId = req.params.id;
         const record = (await vendors_1.VendorsInstance.findOne({
             where: { id: vendorId },
-            include: [{ model: menu_1.MenuInstance, as: "menu" }],
+            include: [
+                { model: menu_1.MenuInstance, as: "menu" },
+                { model: orders_1.OrderInstance, as: "orders" },
+            ],
         }));
         res.status(200).json({
             record: record,

@@ -3,12 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllMenu = exports.LoginUser = exports.RegisterUser = void 0;
+exports.getOrders = exports.MakeOrders = exports.getAllMenu = exports.LoginUser = exports.RegisterUser = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
 const users_1 = require("../models/users");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const menu_1 = require("../models/menu");
+const orders_1 = require("../models/orders");
 async function RegisterUser(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
@@ -116,3 +117,56 @@ async function getAllMenu(req, res, next) {
     }
 }
 exports.getAllMenu = getAllMenu;
+async function MakeOrders(req, res, next) {
+    const id = (0, uuid_1.v4)();
+    try {
+        const userId = req.cookies.id;
+        const verified = req.user;
+        const validationResult = utils_1.makeOrderSchema.validate(req.body, utils_1.options);
+        if (validationResult.error) {
+            return res.status(400).json({
+                Error: validationResult.error.details[0].message,
+            });
+        }
+        const record = await orders_1.OrderInstance.create({
+            id: id,
+            userId: req.body.userId,
+            foodId: req.body.foodId,
+            vendorId: req.body.vendorId,
+            comments: req.body.comments,
+            orderDate: new Date(Date.now()),
+        });
+        res.status(201).json({
+            msg: "You have successfully added a food to the menu",
+            record: record,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            msg: "failed to create",
+            route: "/addfoodtomenu",
+        });
+    }
+}
+exports.MakeOrders = MakeOrders;
+async function getOrders(req, res, next) {
+    try {
+        //const userId = req.cookies.id;
+        const userId = req.params.id;
+        const record = (await users_1.UserInstance.findOne({
+            where: { id: userId },
+            include: [{ model: orders_1.OrderInstance, as: "orders" }],
+        }));
+        res.status(200).json({
+            record: record,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            err: console.log(err),
+            msg: "failed to get record",
+            route: "/login",
+        });
+    }
+}
+exports.getOrders = getOrders;

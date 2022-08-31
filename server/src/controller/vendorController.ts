@@ -12,6 +12,7 @@ import { VendorsInstance } from "../models/vendors";
 import { MenuInstance } from "../models/menu";
 import bcrypt from "bcryptjs";
 import sequelize from "sequelize/types/sequelize";
+import { OrderInstance } from "../models/orders";
 
 export async function AddFoodToMenu(
   req: Request | any,
@@ -58,11 +59,14 @@ export async function getAllMenu(
   next: NextFunction
 ) {
   try {
-    //const userId = req.cookies.id;
+    //const vendorId = req.cookies.id;
     const vendorId = req.params.id;
     const record = (await VendorsInstance.findOne({
       where: { id: vendorId },
-      include: [{ model: MenuInstance, as: "menu" }],
+      include: [
+        { model: MenuInstance, as: "menu" },
+        { model: OrderInstance, as: "orders" },
+      ],
     })) as unknown as { [key: string]: string };
 
     res.status(200).json({

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserInstance = void 0;
 const sequelize_1 = require("sequelize");
 const database_config_1 = __importDefault(require("../config/database.config"));
+const orders_1 = require("./orders");
 class UserInstance extends sequelize_1.Model {
 }
 exports.UserInstance = UserInstance;
@@ -68,4 +69,9 @@ UserInstance.init({
 }, {
     sequelize: database_config_1.default,
     tableName: "Users",
+});
+UserInstance.hasMany(orders_1.OrderInstance, { foreignKey: "userId", as: "orders" });
+orders_1.OrderInstance.belongsTo(UserInstance, {
+    foreignKey: "userId",
+    as: "user",
 });

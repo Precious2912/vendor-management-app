@@ -1,5 +1,6 @@
 import { DataType, DataTypes, Model } from "sequelize";
 import db from "../config/database.config";
+import { OrderInstance } from "./orders";
 
 interface UserAttributes {
   id: string;
@@ -74,3 +75,10 @@ UserInstance.init(
     tableName: "Users",
   }
 );
+
+UserInstance.hasMany(OrderInstance, { foreignKey: "userId", as: "orders" });
+
+OrderInstance.belongsTo(UserInstance, {
+  foreignKey: "userId",
+  as: "user",
+});

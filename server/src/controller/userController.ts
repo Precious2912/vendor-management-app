@@ -5,10 +5,12 @@ import {
   options,
   loginSchema,
   generateToken,
+  makeOrderSchema,
 } from "../utils/utils";
 import { UserInstance } from "../models/users";
 import bcrypt from "bcryptjs";
 import { MenuInstance } from "../models/menu";
+import { OrderInstance } from "../models/orders";
 
 export async function RegisterUser(
   req: Request,
@@ -120,6 +122,67 @@ export async function getAllMenu(
 ) {
   try {
     const record = await MenuInstance.findAll({});
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "failed to get record",
+      route: "/login",
+    });
+  }
+}
+
+export async function MakeOrders(
+  req: Request | any,
+  res: Response,
+  next: NextFunction
+) {
+  const id = uuidv4();
+  try {
+    const userId = req.cookies.id;
+    const verified = req.user;
+    const validationResult = makeOrderSchema.validate(req.body, options);
+    if (validationResult.error) {
+      return res.status(400).json({
+        Error: validationResult.error.details[0].message,
+      });
+    }
+    const record = await OrderInstance.create({
+      id: id,
+      userId: req.body.userId,
+      foodId: req.body.foodId,
+      vendorId: req.body.vendorId,
+      comments: req.body.comments,
+      orderDate: new Date(Date.now()),
+    });
+
+    res.status(201).json({
+      msg: "You have successfully added a food to the menu",
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      msg: "failed to create",
+      route: "/addfoodtomenu",
+    });
+  }
+}
+
+export async function getOrders(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    //const userId = req.cookies.id;
+    const userId = req.params.id;
+    const record = (await UserInstance.findOne({
+      where: { id: userId },
+      include: [{ model: OrderInstance, as: "orders" }],
+    })) as unknown as { [key: string]: string };
 
     res.status(200).json({
       record: record,

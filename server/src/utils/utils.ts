@@ -91,6 +91,11 @@ export const createOrdersSchema = Joi.object().keys({
   comments: Joi.string().required(),
   orderDate: Joi.date().required(),
 });
+export const makeOrderSchema = Joi.object().keys({
+  userId: Joi.string().required(),
+  foodId: Joi.string().required(),
+  vendorId: Joi.string().required(),
+});
 
 export const verifyVendorSchema = Joi.object().keys({
   verified: Joi.boolean(),

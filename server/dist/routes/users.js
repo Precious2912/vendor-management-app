@@ -12,4 +12,6 @@ router.get("/", function (req, res, next) {
 });
 router.post("/register", userController_1.RegisterUser);
 router.post("/login", userController_1.LoginUser);
+router.get("/getorders/:id", userController_1.getOrders);
+router.post("/createorders", userController_1.MakeOrders);
 exports.default = router;
