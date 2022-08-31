@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const VendorStyle = styled.div`
+export const UserStyle = styled.div`
     width: 50%;
     margin: auto;
     justify-content: center;
@@ -25,10 +25,6 @@ export const VendorStyle = styled.div`
             height: 40px;
             margin: 0.5rem;
             border-radius: 0.5rem;
-        }
-
-        & > .btn .verify{
-            background-color: #b2ea70;
         }
 
         & > .btn .remove{
