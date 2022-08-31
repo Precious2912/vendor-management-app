@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginVendor = exports.RegisterVendor = exports.AddFoodToMenu = void 0;
+exports.LoginVendor = exports.RegisterVendor = exports.getAllMenu = exports.AddFoodToMenu = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
 const vendors_1 = require("../models/vendors");
@@ -12,6 +12,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 async function AddFoodToMenu(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
+        const vendorId = req.cookies.id;
         const verified = req.user;
         const validationResult = utils_1.createMenuSchema.validate(req.body, utils_1.options);
         if (validationResult.error) {
@@ -27,6 +28,7 @@ async function AddFoodToMenu(req, res, next) {
             category: req.body.category,
             premium: req.body.premium,
             price: req.body.price,
+            dayServed: req.body.dayServed,
             vendorId: req.body.vendorId,
         });
         res.status(201).json({
@@ -42,6 +44,27 @@ async function AddFoodToMenu(req, res, next) {
     }
 }
 exports.AddFoodToMenu = AddFoodToMenu;
+async function getAllMenu(req, res, next) {
+    try {
+        //const userId = req.cookies.id;
+        const vendorId = req.params.id;
+        const record = (await vendors_1.VendorsInstance.findOne({
+            where: { id: vendorId },
+            include: [{ model: menu_1.MenuInstance, as: "menu" }],
+        }));
+        res.status(200).json({
+            record: record,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            err: console.log(err),
+            msg: "failed to get record",
+            route: "/login",
+        });
+    }
+}
+exports.getAllMenu = getAllMenu;
 async function RegisterVendor(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
@@ -109,7 +132,7 @@ async function LoginVendor(req, res, next) {
         const validVendor = await bcryptjs_1.default.compare(req.body.password, Vendor.password);
         if (!validVendor) {
             res.status(401).json({
-                message: "Password do not match",
+                message: "Password does not match",
             });
         }
         if (validVendor) {

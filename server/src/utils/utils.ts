@@ -79,7 +79,9 @@ export const createMenuSchema = Joi.object().keys({
   image: Joi.string().required(),
   category: Joi.string().required(),
   premium: Joi.boolean().required(),
+  dayServed: Joi.string().required(),
   price: Joi.number().required(),
+
   vendorId: Joi.string().required(),
 });
 export const createOrdersSchema = Joi.object().keys({

@@ -9,6 +9,7 @@ interface MenuAttributes {
   category: string;
   premium: boolean;
   price: number;
+  dayServed: string;
   vendorId: string;
 }
 
@@ -91,6 +92,18 @@ MenuInstance.init(
         },
         notEmpty: {
           msg: "Food price cannot be empty",
+        },
+      },
+    },
+    dayServed: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Day served is required",
+        },
+        notEmpty: {
+          msg: "Day served cannot be empty",
         },
       },
     },

@@ -3,11 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginUser = exports.RegisterUser = void 0;
+exports.getAllMenu = exports.LoginUser = exports.RegisterUser = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
 const users_1 = require("../models/users");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const menu_1 = require("../models/menu");
 async function RegisterUser(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
@@ -41,7 +42,7 @@ async function RegisterUser(req, res, next) {
             phoneNumber: req.body.phoneNumber,
             password: passwordHash,
         });
-        res.status(200).json({
+        res.status(201).json({
             msg: "You have successfully registered",
             record: record,
         });
@@ -83,7 +84,7 @@ async function LoginUser(req, res, next) {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 24,
             });
-            res.status(200).json({
+            res.status(201).json({
                 message: "Successfully logged in",
                 token,
                 User,
@@ -99,3 +100,19 @@ async function LoginUser(req, res, next) {
     }
 }
 exports.LoginUser = LoginUser;
+async function getAllMenu(req, res, next) {
+    try {
+        const record = await menu_1.MenuInstance.findAll({});
+        res.status(200).json({
+            record: record,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            err: console.log(err),
+            msg: "failed to get record",
+            route: "/login",
+        });
+    }
+}
+exports.getAllMenu = getAllMenu;

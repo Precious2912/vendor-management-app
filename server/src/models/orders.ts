@@ -58,15 +58,7 @@ OrderInstance.init(
 
     comments: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "comments is required",
-        },
-        notEmpty: {
-          msg: "comments cannot be empty",
-        },
-      },
+      allowNull: true,
     },
     orderDate: {
       type: DataTypes.DATE,

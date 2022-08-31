@@ -141,7 +141,7 @@ async function removeVendor(req, res, next) {
             });
         }
         const deletedRecord = await record.destroy();
-        res.status(200).json({
+        res.status(201).json({
             message: "You have successfully removed this vendor",
         });
     }

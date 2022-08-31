@@ -1,5 +1,6 @@
 import { DataType, DataTypes, Model } from "sequelize";
 import db from "../config/database.config";
+import { MenuInstance } from "./menu";
 
 interface VendorsAttributes {
   id: string;
@@ -114,3 +115,9 @@ VendorsInstance.init(
     tableName: "Vendors",
   }
 );
+VendorsInstance.hasMany(MenuInstance, { foreignKey: "vendorId", as: "menu" });
+
+MenuInstance.belongsTo(VendorsInstance, {
+  foreignKey: "vendorId",
+  as: "vendor",
+});

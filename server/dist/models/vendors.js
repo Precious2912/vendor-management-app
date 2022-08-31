@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VendorsInstance = void 0;
 const sequelize_1 = require("sequelize");
 const database_config_1 = __importDefault(require("../config/database.config"));
+const menu_1 = require("./menu");
 class VendorsInstance extends sequelize_1.Model {
 }
 exports.VendorsInstance = VendorsInstance;
@@ -104,4 +105,9 @@ VendorsInstance.init({
 }, {
     sequelize: database_config_1.default,
     tableName: "Vendors",
+});
+VendorsInstance.hasMany(menu_1.MenuInstance, { foreignKey: "vendorId", as: "menu" });
+menu_1.MenuInstance.belongsTo(VendorsInstance, {
+    foreignKey: "vendorId",
+    as: "vendor",
 });
