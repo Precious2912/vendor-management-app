@@ -6,5 +6,8 @@ export const RegisterBodyStyle = styled.div`
   justify-content: center;
   align-items: center;
   color: #333333;
-  background-color: #fbd148;
+  background-color: #281212;
 `;
+/* #191507; */
+
+// fbd148
