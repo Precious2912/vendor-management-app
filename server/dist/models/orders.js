@@ -53,15 +53,7 @@ OrderInstance.init({
     },
     comments: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: "comments is required",
-            },
-            notEmpty: {
-                msg: "comments cannot be empty",
-            },
-        },
+        allowNull: true,
     },
     orderDate: {
         type: sequelize_1.DataTypes.DATE,

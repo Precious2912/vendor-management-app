@@ -87,6 +87,18 @@ MenuInstance.init({
             },
         },
     },
+    dayServed: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "Day served is required",
+            },
+            notEmpty: {
+                msg: "Day served cannot be empty",
+            },
+        },
+    },
     vendorId: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,

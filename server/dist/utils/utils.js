@@ -80,6 +80,7 @@ exports.createMenuSchema = joi_1.default.object().keys({
     image: joi_1.default.string().required(),
     category: joi_1.default.string().required(),
     premium: joi_1.default.boolean().required(),
+    dayServed: joi_1.default.string().required(),
     price: joi_1.default.number().required(),
     vendorId: joi_1.default.string().required(),
 });

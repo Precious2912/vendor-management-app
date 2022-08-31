@@ -8,6 +8,7 @@ import {
 } from "../utils/utils";
 import { UserInstance } from "../models/users";
 import bcrypt from "bcryptjs";
+import { MenuInstance } from "../models/menu";
 
 export async function RegisterUser(
   req: Request,
@@ -48,7 +49,7 @@ export async function RegisterUser(
       phoneNumber: req.body.phoneNumber,
       password: passwordHash,
     });
-    res.status(200).json({
+    res.status(201).json({
       msg: "You have successfully registered",
       record: record,
     });
@@ -96,7 +97,7 @@ export async function LoginUser(
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24,
       });
-      res.status(200).json({
+      res.status(201).json({
         message: "Successfully logged in",
         token,
         User,
@@ -107,6 +108,26 @@ export async function LoginUser(
 
     res.status(500).json({
       msg: "failed to login",
+      route: "/login",
+    });
+  }
+}
+
+export async function getAllMenu(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const record = await MenuInstance.findAll({});
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "failed to get record",
       route: "/login",
     });
   }

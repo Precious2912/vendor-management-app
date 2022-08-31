@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import { v4 as uuidv4 } from "uuid";
+import { QueryTypes } from "sequelize";
 import {
   vendorsRegisterSchema,
   vendorLoginSchema,
@@ -10,6 +11,7 @@ import {
 import { VendorsInstance } from "../models/vendors";
 import { MenuInstance } from "../models/menu";
 import bcrypt from "bcryptjs";
+import sequelize from "sequelize/types/sequelize";
 
 export async function AddFoodToMenu(
   req: Request | any,
@@ -18,6 +20,7 @@ export async function AddFoodToMenu(
 ) {
   const id = uuidv4();
   try {
+    const vendorId = req.cookies.id;
     const verified = req.user;
     const validationResult = createMenuSchema.validate(req.body, options);
     if (validationResult.error) {
@@ -33,6 +36,7 @@ export async function AddFoodToMenu(
       category: req.body.category,
       premium: req.body.premium,
       price: req.body.price,
+      dayServed: req.body.dayServed,
       vendorId: req.body.vendorId,
     });
 
@@ -44,6 +48,31 @@ export async function AddFoodToMenu(
     res.status(500).json({
       msg: "failed to create",
       route: "/addfoodtomenu",
+    });
+  }
+}
+
+export async function getAllMenu(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    //const userId = req.cookies.id;
+    const vendorId = req.params.id;
+    const record = (await VendorsInstance.findOne({
+      where: { id: vendorId },
+      include: [{ model: MenuInstance, as: "menu" }],
+    })) as unknown as { [key: string]: string };
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "failed to get record",
+      route: "/login",
     });
   }
 }
@@ -129,13 +158,14 @@ export async function LoginVendor(
 
     if (!validVendor) {
       res.status(401).json({
-        message: "Password do not match",
+        message: "Password does not match",
       });
     }
 
     if (validVendor) {
       res.cookie("authorization", token, {
         httpOnly: true,
+
         maxAge: 1000 * 60 * 60 * 24,
       });
       res.cookie("id", id, {
