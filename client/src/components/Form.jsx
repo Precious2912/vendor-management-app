@@ -41,7 +41,7 @@ const Form = ({
             password: formData.password,
           })
           .then((res) => {
-            if (res.status === 200) {
+            if (res.status === 201) {
               console.log(res);
               login(res.data.fullName, res.data.id, res.data.token);
               navigate("/");
@@ -54,7 +54,7 @@ const Form = ({
         axios
           .post("/users/register", formData)
           .then((res) => {
-            if (res.status === 200) {
+            if (res.status === 201) {
               console.log(res);
               navigate("/login");
             }
