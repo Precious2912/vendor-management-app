@@ -7,6 +7,7 @@ interface OrderAttributes {
   foodId: string;
   vendorId: string;
   comments: string;
+  orderStatus: string;
   orderDate: Date;
 }
 
@@ -57,6 +58,10 @@ OrderInstance.init(
     },
 
     comments: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    orderStatus: {
       type: DataTypes.STRING,
       allowNull: true,
     },

@@ -6,12 +6,14 @@ import {
   vendorLoginSchema,
   generateToken,
   createMenuSchema,
+  updateOrderStatusSchema,
   options,
 } from "../utils/utils";
 import { VendorsInstance } from "../models/vendors";
 import { MenuInstance } from "../models/menu";
 import bcrypt from "bcryptjs";
 import sequelize from "sequelize/types/sequelize";
+import { OrderInstance } from "../models/orders";
 
 export async function AddFoodToMenu(
   req: Request | any,
@@ -52,17 +54,59 @@ export async function AddFoodToMenu(
   }
 }
 
-export async function getAllMenu(
+export async function getAllDetailsWithActiveStatus(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    //const userId = req.cookies.id;
+    //const vendorId = req.cookies.id;
     const vendorId = req.params.id;
     const record = (await VendorsInstance.findOne({
       where: { id: vendorId },
-      include: [{ model: MenuInstance, as: "menu" }],
+      include: [
+        {
+          model: MenuInstance,
+          as: "menu",
+          where: {
+            orderStatus: "active",
+          },
+        },
+        { model: OrderInstance, as: "orders" },
+      ],
+    })) as unknown as { [key: string]: string };
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "failed to get record",
+      route: "/login",
+    });
+  }
+}
+export async function getAllDetailsWithInactiveStatus(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    //const vendorId = req.cookies.id;
+    const vendorId = req.params.id;
+    const record = (await VendorsInstance.findOne({
+      where: { id: vendorId },
+      include: [
+        {
+          model: MenuInstance,
+          as: "menu",
+          where: {
+            orderStatus: "inactive",
+          },
+        },
+        { model: OrderInstance, as: "orders" },
+      ],
     })) as unknown as { [key: string]: string };
 
     res.status(200).json({
@@ -183,6 +227,108 @@ export async function LoginVendor(
 
     res.status(500).json({
       msg: "failed to login",
+      route: "/login",
+    });
+  }
+}
+
+export async function updateOrderStatus(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id } = req.params;
+    const { orderStatus } = req.body;
+    const validationResult = updateOrderStatusSchema.validate(
+      req.body,
+      options
+    );
+    if (validationResult.error) {
+      return res.status(400).json({
+        Error: validationResult.error.details[0].message,
+      });
+    }
+
+    const record = await OrderInstance.findOne({ where: { id } });
+    if (!record) {
+      return res.status(404).json({
+        Error: "This order is no longer available",
+      });
+    }
+    const updatedrecord = await record.update({
+      orderStatus: orderStatus,
+    });
+    res.status(201).json({
+      message: "Order status has been updated successfully",
+      feedback: updatedrecord,
+    });
+  } catch {
+    res.status(500).json({
+      err: Error,
+      msg: "An error has occured",
+      route: "/updateOrderStatus",
+    });
+  }
+}
+
+export async function getAllDetailsWithPendingStatus(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    //const vendorId = req.cookies.id;
+    const vendorId = req.params.id;
+    const record = (await VendorsInstance.findOne({
+      where: { id: vendorId },
+      include: [
+        {
+          model: MenuInstance,
+          as: "menu",
+          where: {
+            orderStatus: "pending",
+          },
+        },
+        { model: OrderInstance, as: "orders" },
+      ],
+    })) as unknown as { [key: string]: string };
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "failed to get record",
+      route: "/login",
+    });
+  }
+}
+
+export async function getAllVendorDetails(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    //const vendorId = req.cookies.id;
+    const vendorId = req.params.id;
+    const record = (await VendorsInstance.findOne({
+      where: { id: vendorId },
+      include: [
+        { model: MenuInstance, as: "menu" },
+        { model: OrderInstance, as: "orders" },
+      ],
+    })) as unknown as { [key: string]: string };
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "failed to get record",
       route: "/login",
     });
   }
