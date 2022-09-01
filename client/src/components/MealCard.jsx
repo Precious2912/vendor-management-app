@@ -1,35 +1,55 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { premiumMealsState, regularMealsState } from "../atoms/mealAtom";
+import { userOrderState } from "../atoms/userOrderAtom";
 import { MealCardStyle } from "../styles/MealCardStyle";
+import { useNavigate } from "react-router-dom";
 
-const dateNow = new Date();
-const currentHour = dateNow.getHours();
+const currentHour = new Date().getHours();
 
-const MealCard = () => {
+const MealCard = ({ meal, breakfast }) => {
   const regularMeals = useRecoilValue(regularMealsState);
   const premiumMeals = useRecoilValue(premiumMealsState);
+  const [userOrders, setUserOrders] = useRecoilState(userOrderState);
 
+  const navigate = useNavigate();
+
+  console.log(userOrders);
   return (
     <MealCardStyle>
       {regularMeals && (
-        <>
+        <div
+          onClick={() => {
+            navigate(`/product/${meal.id}`);
+          }}
+        >
           <div className="image-and-select">
             <img
               className="meal-image"
-              src="https://images.unsplash.com/photo-1595295333158-4742f28fbd85?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
-              alt=""
+              src={meal.image}
+              alt={meal.description}
             />
             <button
               className="select-btn"
-              disabled={currentHour > 9 ? true : false}
+              disabled={
+                breakfast
+                  ? currentHour > 9
+                    ? true
+                    : false
+                  : currentHour > 9
+                  ? false
+                  : true
+              }
+              onClick={() => {
+                setUserOrders([meal]);
+              }}
             >
               Select
             </button>
           </div>
-          <h4>Yam and Egg Sauce</h4>
-          <p>Boiled yam and fried eggs with Tomatoes and Onions</p>
-        </>
+          <h4>{meal.name}</h4>
+          <p>{meal.description}</p>
+        </div>
       )}
 
       {premiumMeals && (
@@ -37,18 +57,29 @@ const MealCard = () => {
           <div className="image-and-select">
             <img
               className="meal-image"
-              src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=781&q=80"
-              alt=""
+              src={meal.image}
+              alt={meal.description}
             />
             <button
               className="select-btn"
-              disabled={currentHour > 9 ? true : false}
+              disabled={
+                breakfast
+                  ? currentHour > 9
+                    ? true
+                    : false
+                  : currentHour > 9
+                  ? false
+                  : true
+              }
+              onClick={() => {
+                setUserOrders([meal]);
+              }}
             >
               Select
             </button>
           </div>
-          <h4>Yam and Egg Sauce</h4>
-          <p>Boiled yam and fried eggs with Tomatoes and Onions</p>
+          <h4>{meal.name}</h4>
+          <p>{meal.description}</p>
         </>
       )}
     </MealCardStyle>

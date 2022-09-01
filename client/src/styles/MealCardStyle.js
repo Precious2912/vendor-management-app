@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const MealCardStyle = styled.div`
   width: 350px;
-  height: 220px;
+  height: 250px;
   background-color: transparent;
   border-radius: 10px;
   border: 1px dashed #f9975d;
@@ -30,9 +30,9 @@ export const MealCardStyle = styled.div`
 
   button:disabled,
   button[disabled] {
-    /* border: 1px solid red; */
     background-color: #cccccc;
     color: #666666;
+    cursor: not-allowed;
   }
   button:disabled:hover {
     background-color: #cccccc;
@@ -49,7 +49,7 @@ export const MealCardStyle = styled.div`
     height: 100px;
     border-radius: 100%;
     object-fit: cover;
-    object-position: center;
+    /* object-position: center; */
   }
 
   .select-btn {
@@ -61,5 +61,8 @@ export const MealCardStyle = styled.div`
 
   .select-btn:hover {
     background-color: #b2ea70;
+  }
+  .select-btn:active {
+    opacity: 0.6;
   }
 `;
