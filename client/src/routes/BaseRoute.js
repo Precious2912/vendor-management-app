@@ -9,7 +9,8 @@ import AdminLogin from "../pages/AdminLogin";
 import AdminRegister from "../pages/AdminRegister";
 import VendorRegister from "../pages/VendorRegister";
 import VendorLogin from "../pages/VendorLogin";
-import { AdminDashboard  } from "../pages/AdminDashboard";
+import { AdminDashboard } from "../pages/AdminDashboard";
+import ProductDetailPage from "../pages/ProductDetailPage";
 
 export const BaseRoute = () => {
   return (
@@ -22,6 +23,7 @@ export const BaseRoute = () => {
       <Route path="/vendor/register" element={<VendorRegister />}></Route>
       <Route path="/vendor/login" element={<VendorLogin />}></Route>
       <Route path="admin/dashboard" element={<AdminDashboard />}></Route>
+      <Route path="product/:id" element={<ProductDetailPage />}></Route>
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>

@@ -10,3 +10,32 @@ export const premiumMealsState = atom({
   default: false,
 });
 
+export const yourOrderStates = atom({
+  key: "yourOrders",
+  default: false,
+});
+
+export const AllMealsState = atom({
+  key: "AllMeals",
+  default: [],
+});
+
+export const BreakfastState = atom({
+  key: "Breakfast",
+  default: [],
+});
+
+export const LunchState = atom({
+  key: "Lunch",
+  default: [],
+});
+
+export const premiumBreakfastsState = atom({
+  key: "premiumBreakfasts",
+  default: [],
+});
+
+export const premiumLunchesState = atom({
+  key: "premiumLunches",
+  default: [],
+});
