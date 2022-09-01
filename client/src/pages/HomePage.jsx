@@ -13,7 +13,7 @@ export const HomePage = () => {
   const premiumMeals = useRecoilValue(premiumMealsState);
   return (
     <HomeStyle>
-      <Header />
+      <Header home/>
       <FilterToggle home />
       <DateNow />
       {regularMeals && (
