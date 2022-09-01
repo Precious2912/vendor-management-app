@@ -12,6 +12,10 @@ router.get("/", function (req, res, next) {
 });
 router.post("/register", vendorController_1.RegisterVendor);
 router.post("/login", vendorController_1.LoginVendor);
-router.post("/addfood", vendorController_1.AddFoodToMenu);
-router.get("/getmenu/:id", vendorController_1.getAllMenu);
+router.post("/addFood", vendorController_1.AddFoodToMenu);
+router.get("/getActiveMenu/:id", vendorController_1.getAllDetailsWithActiveStatus);
+router.get("/getInactiveMenu/:id", vendorController_1.getAllDetailsWithInactiveStatus);
+router.get("/getPendingMenu/:id", vendorController_1.getAllDetailsWithPendingStatus);
+router.get("/getAllVendorDetails/:id", vendorController_1.getAllVendorDetails);
+router.get("/updateOrderStatus/:id", vendorController_1.updateOrderStatus);
 exports.default = router;

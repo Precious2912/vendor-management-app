@@ -4,7 +4,11 @@ import {
   RegisterVendor,
   LoginVendor,
   AddFoodToMenu,
-  getAllMenu,
+  getAllVendorDetails,
+  getAllDetailsWithActiveStatus,
+  getAllDetailsWithInactiveStatus,
+  getAllDetailsWithPendingStatus,
+  updateOrderStatus,
 } from "../controller/vendorController";
 
 /* GET vendors listing. */
@@ -13,7 +17,11 @@ router.get("/", function (req: Request, res: Response, next: NextFunction) {
 });
 router.post("/register", RegisterVendor);
 router.post("/login", LoginVendor);
-router.post("/addfood", AddFoodToMenu);
-router.get("/getmenu/:id", getAllMenu);
+router.post("/addFood", AddFoodToMenu);
+router.get("/getActiveMenu/:id", getAllDetailsWithActiveStatus);
+router.get("/getInactiveMenu/:id", getAllDetailsWithInactiveStatus);
+router.get("/getPendingMenu/:id", getAllDetailsWithPendingStatus);
+router.get("/getAllVendorDetails/:id", getAllVendorDetails);
+router.get("/updateOrderStatus/:id", updateOrderStatus);
 
 export default router;

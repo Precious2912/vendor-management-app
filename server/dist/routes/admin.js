@@ -14,4 +14,7 @@ router.get("/", function (req, res, next) {
 router.post("/register", adminController_1.RegisterAdmin);
 router.post("/login", adminController_1.LoginAdmin);
 router.patch("/verifyvendor/:id", auth_1.authAdmin, adminController_1.verifyVendor);
+router.get("/getOneVendor/:id", adminController_1.getOneVendorDetails);
+router.get("/getAllVendors", adminController_1.getAllVendorDetails);
+router.get("/removeVendor", adminController_1.removeVendor);
 exports.default = router;

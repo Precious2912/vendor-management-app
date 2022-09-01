@@ -79,7 +79,7 @@ export const createMenuSchema = Joi.object().keys({
   image: Joi.string().required(),
   category: Joi.string().required(),
   premium: Joi.boolean().required(),
-  dayServed: Joi.string().required(),
+  dayServed: Joi.string().lowercase().required(),
   price: Joi.number().required(),
 
   vendorId: Joi.string().required(),
@@ -99,6 +99,13 @@ export const makeOrderSchema = Joi.object().keys({
 
 export const verifyVendorSchema = Joi.object().keys({
   verified: Joi.boolean(),
+});
+
+export const feedbackSchema = Joi.object().keys({
+  comments: Joi.string().required(),
+});
+export const updateOrderStatusSchema = Joi.object().keys({
+  orderStatus: Joi.string().lowercase().required(),
 });
 
 export const options = {

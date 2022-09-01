@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.options = exports.verifyVendorSchema = exports.makeOrderSchema = exports.createOrdersSchema = exports.createMenuSchema = exports.vendorsRegisterSchema = exports.adminRegisterSchema = exports.generateToken = exports.vendorLoginSchema = exports.adminLoginSchema = exports.loginSchema = exports.registerSchema = void 0;
+exports.options = exports.updateOrderStatusSchema = exports.feedbackSchema = exports.verifyVendorSchema = exports.makeOrderSchema = exports.createOrdersSchema = exports.createMenuSchema = exports.vendorsRegisterSchema = exports.adminRegisterSchema = exports.generateToken = exports.vendorLoginSchema = exports.adminLoginSchema = exports.loginSchema = exports.registerSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.registerSchema = joi_1.default.object()
@@ -80,7 +80,7 @@ exports.createMenuSchema = joi_1.default.object().keys({
     image: joi_1.default.string().required(),
     category: joi_1.default.string().required(),
     premium: joi_1.default.boolean().required(),
-    dayServed: joi_1.default.string().required(),
+    dayServed: joi_1.default.string().lowercase().required(),
     price: joi_1.default.number().required(),
     vendorId: joi_1.default.string().required(),
 });
@@ -98,6 +98,12 @@ exports.makeOrderSchema = joi_1.default.object().keys({
 });
 exports.verifyVendorSchema = joi_1.default.object().keys({
     verified: joi_1.default.boolean(),
+});
+exports.feedbackSchema = joi_1.default.object().keys({
+    comments: joi_1.default.string().required(),
+});
+exports.updateOrderStatusSchema = joi_1.default.object().keys({
+    orderStatus: joi_1.default.string().lowercase().required(),
 });
 exports.options = {
     abortEarly: false,
