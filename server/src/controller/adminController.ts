@@ -10,6 +10,8 @@ import {
 import { AdminInstance } from "../models/admin";
 import bcrypt from "bcryptjs";
 import { VendorsInstance } from "../models/vendors";
+import { MenuInstance } from "../models/menu";
+import { OrderInstance } from "../models/orders";
 
 export async function RegisterAdmin(
   req: Request,
@@ -170,6 +172,58 @@ export async function removeVendor(
     res.status(500).json({
       msg: "failed to delete",
       route: "/delete/:id",
+    });
+  }
+}
+
+export async function getOneVendorDetails(
+  req: Request | any,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const vendorId = req.params.id;
+    const record = (await VendorsInstance.findOne({
+      where: { id: vendorId },
+      include: [
+        { model: MenuInstance, as: "menu" },
+        { model: OrderInstance, as: "orders" },
+      ],
+    })) as unknown as { [key: string]: string };
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "No record found",
+      route: "/getOneVendor",
+    });
+  }
+}
+
+export async function getAllVendorDetails(
+  req: Request | any,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const record = (await VendorsInstance.findAll({
+      include: [
+        { model: MenuInstance, as: "menu" },
+        { model: OrderInstance, as: "orders" },
+      ],
+    })) as unknown as { [key: string]: string };
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "No record found",
+      route: "/getAllVendors",
     });
   }
 }

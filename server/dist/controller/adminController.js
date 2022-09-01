@@ -3,12 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeVendor = exports.verifyVendor = exports.LoginAdmin = exports.RegisterAdmin = void 0;
+exports.getAllVendorDetails = exports.getOneVendorDetails = exports.removeVendor = exports.verifyVendor = exports.LoginAdmin = exports.RegisterAdmin = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
 const admin_1 = require("../models/admin");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const vendors_1 = require("../models/vendors");
+const menu_1 = require("../models/menu");
+const orders_1 = require("../models/orders");
 async function RegisterAdmin(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
@@ -153,3 +155,47 @@ async function removeVendor(req, res, next) {
     }
 }
 exports.removeVendor = removeVendor;
+async function getOneVendorDetails(req, res, next) {
+    try {
+        const vendorId = req.params.id;
+        const record = (await vendors_1.VendorsInstance.findOne({
+            where: { id: vendorId },
+            include: [
+                { model: menu_1.MenuInstance, as: "menu" },
+                { model: orders_1.OrderInstance, as: "orders" },
+            ],
+        }));
+        res.status(200).json({
+            record: record,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            err: console.log(err),
+            msg: "No record found",
+            route: "/getOneVendor",
+        });
+    }
+}
+exports.getOneVendorDetails = getOneVendorDetails;
+async function getAllVendorDetails(req, res, next) {
+    try {
+        const record = (await vendors_1.VendorsInstance.findAll({
+            include: [
+                { model: menu_1.MenuInstance, as: "menu" },
+                { model: orders_1.OrderInstance, as: "orders" },
+            ],
+        }));
+        res.status(200).json({
+            record: record,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            err: console.log(err),
+            msg: "No record found",
+            route: "/getAllVendors",
+        });
+    }
+}
+exports.getAllVendorDetails = getAllVendorDetails;

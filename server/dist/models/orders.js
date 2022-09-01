@@ -55,6 +55,10 @@ OrderInstance.init({
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,
     },
+    orderStatus: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true,
+    },
     orderDate: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: false,

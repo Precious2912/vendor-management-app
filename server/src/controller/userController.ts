@@ -5,10 +5,13 @@ import {
   options,
   loginSchema,
   generateToken,
+  makeOrderSchema,
+  feedbackSchema,
 } from "../utils/utils";
 import { UserInstance } from "../models/users";
 import bcrypt from "bcryptjs";
 import { MenuInstance } from "../models/menu";
+import { OrderInstance } from "../models/orders";
 
 export async function RegisterUser(
   req: Request,
@@ -129,6 +132,151 @@ export async function getAllMenu(
       err: console.log(err),
       msg: "failed to get record",
       route: "/login",
+    });
+  }
+}
+
+export async function MakeOrders(
+  req: Request | any,
+  res: Response,
+  next: NextFunction
+) {
+  const id = uuidv4();
+  try {
+    const userId = req.cookies.id;
+    const verified = req.user;
+    const validationResult = makeOrderSchema.validate(req.body, options);
+    if (validationResult.error) {
+      return res.status(400).json({
+        Error: validationResult.error.details[0].message,
+      });
+    }
+    const record = await OrderInstance.create({
+      id: id,
+      userId: req.body.userId,
+      foodId: req.body.foodId,
+      vendorId: req.body.vendorId,
+      comments: req.body.comments,
+      orderStatus: "active",
+      orderDate: new Date(Date.now()),
+    });
+
+    res.status(201).json({
+      msg: "You have successfully added a food to the menu",
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      msg: "failed to create",
+      route: "/addfoodtomenu",
+    });
+  }
+}
+
+export async function getOrders(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    //const userId = req.cookies.id;
+    const userId = req.params.id;
+    const record = (await UserInstance.findOne({
+      where: { id: userId },
+      include: [{ model: OrderInstance, as: "orders" }],
+    })) as unknown as { [key: string]: string };
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "failed to get record",
+      route: "/login",
+    });
+  }
+}
+
+export async function getOneMealDetail(
+  req: Request | any,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const mealId = req.params.id;
+    const record = await MenuInstance.findOne({
+      where: { id: mealId },
+    });
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "No record found",
+      route: "/getameal",
+    });
+  }
+}
+
+export async function giveFeedback(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id } = req.params;
+    const { comments } = req.body;
+    const validationResult = feedbackSchema.validate(req.body, options);
+    if (validationResult.error) {
+      return res.status(400).json({
+        Error: validationResult.error.details[0].message,
+      });
+    }
+
+    const record = await OrderInstance.findOne({ where: { id } });
+    if (!record) {
+      return res.status(404).json({
+        Error: "This order is no longer available",
+      });
+    }
+    const updatedrecord = await record.update({
+      comments: comments,
+    });
+    res.status(201).json({
+      message: "Thank you for your feedback. We care more about you",
+      feedback: updatedrecord,
+    });
+  } catch {
+    res.status(500).json({
+      err: Error,
+      msg: "You cannot give a feedback at this moment",
+      route: "/feedback",
+    });
+  }
+}
+
+export async function getOneOrderDetail(
+  req: Request | any,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const orderId = req.params.id;
+    const record = await OrderInstance.findOne({
+      where: { id: orderId },
+    });
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "No record found",
+      route: "/getAnOrder",
     });
   }
 }
