@@ -1,25 +1,32 @@
 import React, { useEffect } from "react";
 import { HeaderStyle } from "../styles/HeaderStyle";
 import { AiOutlineSearch } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AllMealsState } from "../atoms/mealAtom";
 import { useRecoilState } from "recoil";
+import { userInfoState } from "../atoms/userAtom";
+import { UseAuth } from "../hooks/UseAuth";
 
-const Header = ({ home, admin, orders }) => {
+const Header = ({ home, admin, vendor, orders }) => {
   const [allMeals, setAllMeals] = useRecoilState(AllMealsState);
+  const [loggedInUser, setLoggedInUser] = useRecoilState(userInfoState);
 
   const handleSearch = (e) => {
     e.preventDefault();
     // console.log(e.target.value);
     // setAllMeals(allMeals.filter((meal) => meal.name.includes(e.target.value)));
   };
+  const navigate = useNavigate();
 
-  console.log(allMeals.filter((meal) => meal.name.includes("Yam")));
+  const user = JSON.parse(localStorage.getItem("user"));
+  useEffect(() => {
+    setLoggedInUser(user);
+  }, []);
 
   return (
     <HeaderStyle>
       <Link className="link" to="/">
-        <div>Sapa Kitchen</div>
+        <div className="logo">Sapa Kitchen</div>
       </Link>
       {home && (
         <div className="search">
@@ -33,9 +40,20 @@ const Header = ({ home, admin, orders }) => {
       )}
 
       {admin && <p>Dashboard</p>}
+      {vendor && <p>Dashboard</p>}
       {orders && <p>Your Orders</p>}
-      <div>
-        <p>Hello Franklin 👋🏼 </p>
+      <div className="user-actions">
+        <div>
+          <p>Hello {user.fullName.split(" ")[0]} 👋🏼 </p>
+        </div>
+        <button
+          onClick={() => {
+            localStorage.clear();
+            navigate("/login");
+          }}
+        >
+          Logout
+        </button>
       </div>
     </HeaderStyle>
   );

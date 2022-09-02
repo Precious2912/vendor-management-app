@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { premiumMealsState, regularMealsState } from "../atoms/mealAtom";
-import { userOrderState } from "../atoms/userOrderAtom";
+import { userOrderState } from "../atoms/userAtom";
 import { MealCardStyle } from "../styles/MealCardStyle";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +14,7 @@ const MealCard = ({ meal, breakfast }) => {
 
   const navigate = useNavigate();
 
-  console.log(userOrders);
+  // console.log(userOrders);
   return (
     <MealCardStyle>
       {regularMeals && (
@@ -75,7 +75,7 @@ const MealCard = ({ meal, breakfast }) => {
                 setUserOrders([meal]);
               }}
             >
-              Select
+              Pay for Meal
             </button>
           </div>
           <h4>{meal.name}</h4>

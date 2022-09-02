@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "../api/axios";
-import validation from "../utils/validation";
+//import validation from "../utils/validation";
 import { useNavigate, Link } from "react-router-dom";
 import { UseAuth } from "../hooks/UseAuth";
 import { FormStyle } from "../styles/FormStyle";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Form = ({
   signIn,
@@ -23,13 +25,10 @@ const Form = ({
     confirm_password: "",
   });
 
+  // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const { login } = UseAuth();
-
-  // useEffect(() => {
-  //   setErrors(validation(formData));
-  // }, [formData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,13 +41,15 @@ const Form = ({
           })
           .then((res) => {
             if (res.status === 201) {
-              console.log(res);
+              // console.log(res);
               login(res.data.fullName, res.data.id, res.data.token);
+              localStorage.setItem("token", JSON.stringify(res.data.token));
+              localStorage.setItem("user", JSON.stringify(res.data.User));
               navigate("/");
             }
           })
           .catch((err) => {
-            console.log(err);
+            toast.error("invalid email or password");
           });
       } else if (UserSignup) {
         axios
@@ -61,6 +62,7 @@ const Form = ({
           })
           .catch((err) => {
             console.log(err);
+            toast.error("Incorrect credentials");
           });
       } else if (AdminSignup) {
         // admin signup
@@ -76,6 +78,7 @@ const Form = ({
 
   return (
     <FormStyle onSubmit={handleSubmit}>
+      <ToastContainer />
       <h2>
         {UserLogin
           ? "Log In"
@@ -103,17 +106,18 @@ const Form = ({
                   fullName: e.target.value.trim(),
                 })
               }
+              required
             />
             {errors.fullName && <p className="error">{errors.fullName}</p>}
           </div>
         )}
-
         <div>
           <label htmlFor="email"></label>
           <input
             type="email"
             placeholder="Email"
             name="email"
+            required
             onChange={(e) =>
               setFormData({
                 ...formData,
@@ -130,6 +134,7 @@ const Form = ({
               type="text"
               placeholder="Phone Number"
               name="phoneNumber"
+              required
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -148,6 +153,7 @@ const Form = ({
             type="password"
             placeholder="Password"
             name="password"
+            required
             onChange={(e) =>
               setFormData({
                 ...formData,
@@ -164,6 +170,7 @@ const Form = ({
               type="password"
               placeholder="Confirm Password"
               name="confirmPassword"
+              required
               onChange={(e) =>
                 setFormData({
                   ...formData,

@@ -11,13 +11,13 @@ const vendors_1 = require("../models/vendors");
 const admin_1 = require("../models/admin");
 async function authUser(req, res, next) {
     try {
-        const auth = req.cookies.authorization;
+        const auth = req.headers.authorization;
         if (!auth) {
             res.status(401).json({
                 Error: "Kindly login from the user login page",
             });
         }
-        const token = auth;
+        const token = auth.slice(7, auth.length);
         let verified = jsonwebtoken_1.default.verify(token, secret);
         if (!verified) {
             return res.status(401).json({
@@ -45,13 +45,13 @@ async function authUser(req, res, next) {
 exports.authUser = authUser;
 async function authAdmin(req, res, next) {
     try {
-        const auth = req.cookies.authorization;
+        const auth = req.headers.authorization;
         if (!auth) {
             res.status(401).json({
                 Error: "Kindly login from the Admin login page",
             });
         }
-        const token = auth;
+        const token = auth.slice(7, auth.length);
         let verified = jsonwebtoken_1.default.verify(token, secret);
         if (!verified) {
             return res.status(401).json({
@@ -79,13 +79,13 @@ async function authAdmin(req, res, next) {
 exports.authAdmin = authAdmin;
 async function authVendor(req, res, next) {
     try {
-        const auth = req.cookies.authorization;
+        const auth = req.headers.authorization;
         if (!auth) {
             res.status(401).json({
                 Error: "Kindly login from the vendor login page",
             });
         }
-        const token = auth;
+        const token = auth.slice(7, auth.length);
         let verified = jsonwebtoken_1.default.verify(token, secret);
         if (!verified) {
             return res.status(401).json({
