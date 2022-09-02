@@ -23,13 +23,6 @@ export const BaseRoute = () => {
       <Route path="/admin/register" element={<AdminRegister />}></Route>
       <Route path="/vendor/register" element={<VendorRegister />}></Route>
       <Route path="/vendor/login" element={<VendorLogin />}></Route>
-<<<<<<< HEAD
-      <Route path="admin/dashboard" element={<AdminDashboard />}></Route>
-      
-      {/* Protected Routes */}
-      <Route element={<ProtectedRoute />}>
-      <Route path="/" element={<HomePage />} />
-=======
       <Route path="product/:id" element={<ProductDetailPage />}></Route>
 
       {/* Protected Routes */}
@@ -37,7 +30,6 @@ export const BaseRoute = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="admin/dashboard" element={<AdminDashboard />} />
         <Route path="vendor/dashboard" element={<VendorDashboardPage />} />
->>>>>>> 56dea9e0dba66f586bd8f3fd0ffd61d119a9f3a6
       </Route>
 
       {/* Error Route */}
