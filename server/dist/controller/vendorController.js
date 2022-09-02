@@ -3,12 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginVendor = exports.RegisterVendor = exports.getAllMenu = exports.AddFoodToMenu = void 0;
+exports.getAllVendorDetails = exports.getAllDetailsWithPendingStatus = exports.updateOrderStatus = exports.LoginVendor = exports.RegisterVendor = exports.getAllDetailsWithInactiveStatus = exports.getAllDetailsWithActiveStatus = exports.AddFoodToMenu = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
 const vendors_1 = require("../models/vendors");
 const menu_1 = require("../models/menu");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const orders_1 = require("../models/orders");
 async function AddFoodToMenu(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
@@ -44,13 +45,22 @@ async function AddFoodToMenu(req, res, next) {
     }
 }
 exports.AddFoodToMenu = AddFoodToMenu;
-async function getAllMenu(req, res, next) {
+async function getAllDetailsWithActiveStatus(req, res, next) {
     try {
-        //const userId = req.cookies.id;
+        //const vendorId = req.cookies.id;
         const vendorId = req.params.id;
         const record = (await vendors_1.VendorsInstance.findOne({
             where: { id: vendorId },
-            include: [{ model: menu_1.MenuInstance, as: "menu" }],
+            include: [
+                {
+                    model: menu_1.MenuInstance,
+                    as: "menu",
+                    where: {
+                        orderStatus: "active",
+                    },
+                },
+                { model: orders_1.OrderInstance, as: "orders" },
+            ],
         }));
         res.status(200).json({
             record: record,
@@ -64,7 +74,37 @@ async function getAllMenu(req, res, next) {
         });
     }
 }
-exports.getAllMenu = getAllMenu;
+exports.getAllDetailsWithActiveStatus = getAllDetailsWithActiveStatus;
+async function getAllDetailsWithInactiveStatus(req, res, next) {
+    try {
+        //const vendorId = req.cookies.id;
+        const vendorId = req.params.id;
+        const record = (await vendors_1.VendorsInstance.findOne({
+            where: { id: vendorId },
+            include: [
+                {
+                    model: menu_1.MenuInstance,
+                    as: "menu",
+                    where: {
+                        orderStatus: "inactive",
+                    },
+                },
+                { model: orders_1.OrderInstance, as: "orders" },
+            ],
+        }));
+        res.status(200).json({
+            record: record,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            err: console.log(err),
+            msg: "failed to get record",
+            route: "/login",
+        });
+    }
+}
+exports.getAllDetailsWithInactiveStatus = getAllDetailsWithInactiveStatus;
 async function RegisterVendor(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
@@ -101,14 +141,14 @@ async function RegisterVendor(req, res, next) {
             password: passwordHash,
             verified: false,
         });
-        res.status(201).json({
+        return res.status(201).json({
             msg: "You have successfully registered",
             record: record,
         });
     }
     catch (err) {
         console.log(err);
-        res.status(500).json({
+        return res.status(500).json({
             msg: "failed to register",
             route: "/register",
         });
@@ -160,3 +200,90 @@ async function LoginVendor(req, res, next) {
     }
 }
 exports.LoginVendor = LoginVendor;
+async function updateOrderStatus(req, res, next) {
+    try {
+        const { id } = req.params;
+        const { orderStatus } = req.body;
+        const validationResult = utils_1.updateOrderStatusSchema.validate(req.body, utils_1.options);
+        if (validationResult.error) {
+            return res.status(400).json({
+                Error: validationResult.error.details[0].message,
+            });
+        }
+        const record = await orders_1.OrderInstance.findOne({ where: { id } });
+        if (!record) {
+            return res.status(404).json({
+                Error: "This order is no longer available",
+            });
+        }
+        const updatedrecord = await record.update({
+            orderStatus: orderStatus,
+        });
+        res.status(201).json({
+            message: "Order status has been updated successfully",
+            feedback: updatedrecord,
+        });
+    }
+    catch {
+        res.status(500).json({
+            err: Error,
+            msg: "An error has occured",
+            route: "/updateOrderStatus",
+        });
+    }
+}
+exports.updateOrderStatus = updateOrderStatus;
+async function getAllDetailsWithPendingStatus(req, res, next) {
+    try {
+        //const vendorId = req.cookies.id;
+        const vendorId = req.params.id;
+        const record = (await vendors_1.VendorsInstance.findOne({
+            where: { id: vendorId },
+            include: [
+                {
+                    model: menu_1.MenuInstance,
+                    as: "menu",
+                    where: {
+                        orderStatus: "pending",
+                    },
+                },
+                { model: orders_1.OrderInstance, as: "orders" },
+            ],
+        }));
+        res.status(200).json({
+            record: record,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            err: console.log(err),
+            msg: "failed to get record",
+            route: "/login",
+        });
+    }
+}
+exports.getAllDetailsWithPendingStatus = getAllDetailsWithPendingStatus;
+async function getAllVendorDetails(req, res, next) {
+    try {
+        //const vendorId = req.cookies.id;
+        const vendorId = req.params.id;
+        const record = (await vendors_1.VendorsInstance.findOne({
+            where: { id: vendorId },
+            include: [
+                { model: menu_1.MenuInstance, as: "menu" },
+                { model: orders_1.OrderInstance, as: "orders" },
+            ],
+        }));
+        res.status(200).json({
+            record: record,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            err: console.log(err),
+            msg: "failed to get record",
+            route: "/login",
+        });
+    }
+}
+exports.getAllVendorDetails = getAllVendorDetails;

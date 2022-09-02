@@ -7,6 +7,7 @@ exports.VendorsInstance = void 0;
 const sequelize_1 = require("sequelize");
 const database_config_1 = __importDefault(require("../config/database.config"));
 const menu_1 = require("./menu");
+const orders_1 = require("./orders");
 class VendorsInstance extends sequelize_1.Model {
 }
 exports.VendorsInstance = VendorsInstance;
@@ -108,6 +109,14 @@ VendorsInstance.init({
 });
 VendorsInstance.hasMany(menu_1.MenuInstance, { foreignKey: "vendorId", as: "menu" });
 menu_1.MenuInstance.belongsTo(VendorsInstance, {
+    foreignKey: "vendorId",
+    as: "vendor",
+});
+VendorsInstance.hasMany(orders_1.OrderInstance, {
+    foreignKey: "vendorId",
+    as: "orders",
+});
+orders_1.OrderInstance.belongsTo(VendorsInstance, {
     foreignKey: "vendorId",
     as: "vendor",
 });

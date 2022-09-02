@@ -14,7 +14,7 @@ const Header = ({home, admin}) => {
         <AiOutlineSearch size={20} color={"#565656"} />
         <input type="text" placeholder="Search for a meal" />
       </div>}
-      
+
      {admin && (
         <p>Dashboard</p>
         )}
