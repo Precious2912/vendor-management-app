@@ -6,15 +6,27 @@ import { AllMealsState } from "../atoms/mealAtom";
 import { useRecoilState } from "recoil";
 import { userInfoState } from "../atoms/userAtom";
 import { UseAuth } from "../hooks/UseAuth";
+import { filteredMealsState, searchInputState } from "../atoms/filteredMeals";
 
 const Header = ({ home, admin, vendor, orders }) => {
   const [allMeals, setAllMeals] = useRecoilState(AllMealsState);
   const [loggedInUser, setLoggedInUser] = useRecoilState(userInfoState);
+  const [filtered, setfiltered] = useRecoilState(filteredMealsState);
+  const [searchInput, setSearchInput] = useRecoilState(searchInputState);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // console.log(e.target.value);
-    // setAllMeals(allMeals.filter((meal) => meal.name.includes(e.target.value)));
+    console.log(e.target.value);
+    if (e.target.value) {
+      setSearchInput(true)
+    } else {
+      setSearchInput(false)
+    }
+    // setSearch(e.target.value)
+    const filteredMeals = allMeals.filter((meal) => meal.name.toLowerCase().includes(e.target.value.toLowerCase()))
+    // setAllMeals(filteredMeals);
+    setfiltered(filteredMeals)
+    console.log(filtered);
   };
   const navigate = useNavigate();
 

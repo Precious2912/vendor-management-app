@@ -17,6 +17,10 @@ import {
   yourOrderStates,
 } from "../atoms/mealAtom";
 import axios from "../api/axios";
+import MealCard from "../components/MealCard";
+import { userOrderState } from "../atoms/userAtom";
+import { filteredMealsState, searchInputState } from "../atoms/filteredMeals";
+
 
 const dayOfTheWeek = new Date().getDay();
 
@@ -29,6 +33,8 @@ const days = [
   "Friday",
   "Saturday",
 ];
+
+
 
 export const HomePage = () => {
   const regularMeals = useRecoilValue(regularMealsState);
@@ -45,48 +51,102 @@ export const HomePage = () => {
   const [premiumLunches, setPremiumLunches] =
     useRecoilState(premiumLunchesState);
 
+    const [userOrder, setUserOrders] = useRecoilState(userOrderState)
+    const [filter, setfilter] = useRecoilState(filteredMealsState);
+    const [searchInput, setSearchInput] = useRecoilState(searchInputState);
+
   useEffect(() => {
     axios.get("/getallfood").then((res) => {
       setAllMeals(res.data.record);
-      setBreakfasts(
-        res.data.record.filter(
-          (meal) =>
-            !meal.premium &&
-            meal.category === "Breakfast" &&
-            meal.dayServed === days[dayOfTheWeek]
-        )
-      );
-      setLunches(
-        res.data.record.filter(
-          (meal) =>
-            !meal.premium &&
-            meal.category === "Lunch" &&
-            meal.dayServed === days[dayOfTheWeek]
-        )
-      );
-      setPremiumBreakfasts(
-        res.data.record.filter(
-          (meal) =>
-            meal.premium &&
-            meal.category === "Breakfast" &&
-            meal.dayServed === days[dayOfTheWeek]
-        )
-      );
-      setPremiumLunches(
-        res.data.record.filter(
-          (meal) =>
-            meal.premium &&
-            meal.category === "Lunch" &&
-            meal.dayServed === days[dayOfTheWeek]
-        )
-      );
+      if(searchInput) {
+        setBreakfasts(
+          filter.filter(
+            (meal) =>
+              !meal.premium &&
+              meal.category === "Breakfast" &&
+              meal.dayServed === days[dayOfTheWeek]
+          )
+        );
+      } else {
+        setBreakfasts(
+          res.data.record.filter(
+            (meal) =>
+              !meal.premium &&
+              meal.category === "Breakfast" &&
+              meal.dayServed === days[dayOfTheWeek]
+          )
+        );
+      }
+      if (searchInput) {
+        setLunches(
+          filter.filter(
+            (meal) =>
+              !meal.premium &&
+              meal.category === "Lunch" &&
+              meal.dayServed === days[dayOfTheWeek]
+          )
+        );
+      } else {
+        setLunches(
+          res.data.record.filter(
+            (meal) =>
+              !meal.premium &&
+              meal.category === "Lunch" &&
+              meal.dayServed === days[dayOfTheWeek]
+          )
+        );
+      }
+      if (searchInput) {
+        setPremiumBreakfasts(
+          filter.filter(
+            (meal) =>
+              meal.premium &&
+              meal.category === "Breakfast" &&
+              meal.dayServed === days[dayOfTheWeek]
+          )
+        );
+      } else {
+        setPremiumBreakfasts(
+          res.data.record.filter(
+            (meal) =>
+              meal.premium &&
+              meal.category === "Breakfast" &&
+              meal.dayServed === days[dayOfTheWeek]
+          )
+        );
+      }
+
+      if (searchInput) {
+        setPremiumLunches(
+          filter.filter(
+            (meal) =>
+              meal.premium &&
+              meal.category === "Lunch" &&
+              meal.dayServed === days[dayOfTheWeek]
+          )
+        );
+
+      } else {
+        setPremiumLunches(
+          res.data.record.filter(
+            (meal) =>
+              meal.premium &&
+              meal.category === "Lunch" &&
+              meal.dayServed === days[dayOfTheWeek]
+          )
+        );
+      }
+      
+     
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filter]);
 
   // console.log(allMeals);
   // console.log(premiumLunches);
 
+  console.log({Lunches})
+  console.log({filter})
   return (
     <HomeStyle>
       <Header home />
@@ -104,7 +164,7 @@ export const HomePage = () => {
           <Meals premiumLunch={premiumLunches} />
         </>
       )}
-      {yourOrders && <p>display orders</p>}
+      {/* {yourOrders && <MealCard meal={userOrder}/>} */}
       <Footer />
     </HomeStyle>
   );
