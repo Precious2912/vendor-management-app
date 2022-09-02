@@ -3,15 +3,13 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 import { UseAuth } from "../hooks/UseAuth";
 
 export const ProtectedRoute = () => {
-    const location = useLocation();
-    const { loggedIn } = UseAuth();
+  const location = useLocation();
+  //   const { loggedIn } = UseAuth();
+  const user = JSON.parse(localStorage.getItem("user"));
 
-    return loggedIn ? ( <
-        Outlet / >
-    ) : ( <
-        Navigate to = "/login"
-        state = {
-            { from: location } }
-        replace / >
-    );
+  return user ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" state={{ from: location }} replace />
+  );
 };

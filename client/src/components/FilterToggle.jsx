@@ -6,9 +6,10 @@ import {
   regularMealsState,
   yourOrderStates,
 } from "../atoms/mealAtom";
+import { foodListState, ordersPlacedState } from "../atoms/vendorAtom";
 import { FilterToggleStyle } from "../styles/FilterToggleStyle";
 
-const FilterToggle = ({ home, admin }) => {
+const FilterToggle = ({ home, admin, vendor }) => {
   const [regularActive, setRegularActive] = useRecoilState(regularMealsState);
   const [premiumActive, setPremiumActive] = useRecoilState(premiumMealsState);
   const [yourOrdersActive, setYourOrdersActive] =
@@ -16,6 +17,9 @@ const FilterToggle = ({ home, admin }) => {
   const [vendorActive, setVendorActive] = useRecoilState(vendorsState);
   const [userActive, setUserActive] = useRecoilState(userState);
   const [commentActive, setCommentActive] = useRecoilState(commentsState);
+  const [foodListActive, setFoodListActive] = useRecoilState(foodListState);
+  const [ordersPlacedActive, setOrdersPlacedActive] =
+    useRecoilState(ordersPlacedState);
   return (
     <FilterToggleStyle>
       {home ? (
@@ -84,9 +88,28 @@ const FilterToggle = ({ home, admin }) => {
             Comments
           </p>
         </>
-      ) : (
-        ""
-      )}
+      ) : vendor ? (
+        <>
+          <p
+            className={foodListActive ? "active" : ""}
+            onClick={() => {
+              setFoodListActive(true);
+              setOrdersPlacedActive(false);
+            }}
+          >
+            Food
+          </p>
+          <p
+            className={ordersPlacedActive ? "active" : ""}
+            onClick={() => {
+              setOrdersPlacedActive(true);
+              setFoodListActive(false);
+            }}
+          >
+            Orders Placed
+          </p>
+        </>
+      ) : null}
     </FilterToggleStyle>
   );
 };

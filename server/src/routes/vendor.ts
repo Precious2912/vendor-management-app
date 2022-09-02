@@ -10,6 +10,7 @@ import {
   getAllDetailsWithPendingStatus,
   updateOrderStatus,
 } from "../controller/vendorController";
+import { authVendor } from "../middleware/auth";
 
 /* GET vendors listing. */
 router.get("/", function (req: Request, res: Response, next: NextFunction) {
@@ -17,7 +18,7 @@ router.get("/", function (req: Request, res: Response, next: NextFunction) {
 });
 router.post("/register", RegisterVendor);
 router.post("/login", LoginVendor);
-router.post("/addFood", AddFoodToMenu);
+router.post("/addFood", authVendor, AddFoodToMenu);
 router.get("/getActiveMenu/:id", getAllDetailsWithActiveStatus);
 router.get("/getInactiveMenu/:id", getAllDetailsWithInactiveStatus);
 router.get("/getPendingMenu/:id", getAllDetailsWithPendingStatus);

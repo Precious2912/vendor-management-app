@@ -34,6 +34,7 @@ export const HomePage = () => {
   const regularMeals = useRecoilValue(regularMealsState);
   const premiumMeals = useRecoilValue(premiumMealsState);
   const yourOrders = useRecoilValue(yourOrderStates);
+  // eslint-disable-next-line no-unused-vars
   const [allMeals, setAllMeals] = useRecoilState(AllMealsState);
   const [breakfasts, setBreakfasts] = useRecoilState(BreakfastState);
   const [Lunches, setLunches] = useRecoilState(LunchState);
@@ -80,6 +81,7 @@ export const HomePage = () => {
         )
       );
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // console.log(allMeals);

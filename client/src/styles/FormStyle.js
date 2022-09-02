@@ -17,6 +17,7 @@ export const FormStyle = styled.div`
   }
 
   & > form > div > input {
+    -webkit-appearance: none; 
     border: none;
     outline: none;
     font-size: 1rem;
