@@ -65,4 +65,11 @@ export const MealCardStyle = styled.div`
   .select-btn:active {
     opacity: 0.6;
   }
+
+  .name-and-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.3rem;
+  }
 `;

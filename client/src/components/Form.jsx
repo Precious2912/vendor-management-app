@@ -109,13 +109,13 @@ const Form = ({
           .catch((err) => {
             console.log(err);
           });
-      } 
+      }
     }
   };
 
   return (
     <FormStyle onSubmit={handleSubmit}>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <h2>
         {UserLogin
           ? "Log In"

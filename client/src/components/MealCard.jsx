@@ -53,7 +53,11 @@ const MealCard = ({ meal, breakfast }) => {
       )}
 
       {premiumMeals && (
-        <>
+        <div
+          onClick={() => {
+            navigate(`/product/${meal.id}`);
+          }}
+        >
           <div className="image-and-select">
             <img
               className="meal-image"
@@ -78,9 +82,12 @@ const MealCard = ({ meal, breakfast }) => {
               Pay for Meal
             </button>
           </div>
-          <h4>{meal.name}</h4>
+          <div className="name-and-price">
+            <h4>{meal.name}</h4>
+            <p>{meal.price}</p>
+          </div>
           <p>{meal.description}</p>
-        </>
+        </div>
       )}
     </MealCardStyle>
   );

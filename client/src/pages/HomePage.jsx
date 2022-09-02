@@ -17,6 +17,7 @@ import {
   yourOrderStates,
 } from "../atoms/mealAtom";
 import axios from "../api/axios";
+import { userOrderState } from "../atoms/userAtom";
 
 const dayOfTheWeek = new Date().getDay();
 
@@ -34,6 +35,7 @@ export const HomePage = () => {
   const regularMeals = useRecoilValue(regularMealsState);
   const premiumMeals = useRecoilValue(premiumMealsState);
   const yourOrders = useRecoilValue(yourOrderStates);
+  const [userOrders, setUserOrders] = useRecoilState(userOrderState);
   // eslint-disable-next-line no-unused-vars
   const [allMeals, setAllMeals] = useRecoilState(AllMealsState);
   const [breakfasts, setBreakfasts] = useRecoilState(BreakfastState);
@@ -45,6 +47,8 @@ export const HomePage = () => {
   const [premiumLunches, setPremiumLunches] =
     useRecoilState(premiumLunchesState);
 
+  // console.log(yourOrders);
+  console.log(userOrders);
   useEffect(() => {
     axios.get("/getallfood").then((res) => {
       setAllMeals(res.data.record);
@@ -81,7 +85,7 @@ export const HomePage = () => {
         )
       );
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // console.log(allMeals);
