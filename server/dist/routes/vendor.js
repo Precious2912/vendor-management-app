@@ -18,4 +18,6 @@ router.get("/getInactiveMenu/:id", vendorController_1.getAllDetailsWithInactiveS
 router.get("/getPendingMenu/:id", vendorController_1.getAllDetailsWithPendingStatus);
 router.get("/getAllVendorDetails/:id", vendorController_1.getAllVendorDetails);
 router.get("/updateOrderStatus/:id", vendorController_1.updateOrderStatus);
+router.get("/updatevendor/:id", vendorController_1.updateVendorRecord);
+router.get("/updatemenu/:id", vendorController_1.updateMenu);
 exports.default = router;

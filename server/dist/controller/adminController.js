@@ -115,7 +115,7 @@ async function verifyVendor(req, res, next) {
         const record = await vendors_1.VendorsInstance.findOne({ where: { id } });
         if (!record) {
             return res.status(404).json({
-                Error: "Cannot find existing course",
+                Error: "Cannot find existing vendor",
             });
         }
         const updatedrecord = await record.update({

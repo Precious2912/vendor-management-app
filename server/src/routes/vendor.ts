@@ -9,6 +9,8 @@ import {
   getAllDetailsWithInactiveStatus,
   getAllDetailsWithPendingStatus,
   updateOrderStatus,
+  updateVendorRecord,
+  updateMenu,
 } from "../controller/vendorController";
 
 /* GET vendors listing. */
@@ -23,5 +25,7 @@ router.get("/getInactiveMenu/:id", getAllDetailsWithInactiveStatus);
 router.get("/getPendingMenu/:id", getAllDetailsWithPendingStatus);
 router.get("/getAllVendorDetails/:id", getAllVendorDetails);
 router.get("/updateOrderStatus/:id", updateOrderStatus);
+router.get("/updatevendor/:id", updateVendorRecord);
+router.get("/updatemenu/:id", updateMenu);
 
 export default router;
