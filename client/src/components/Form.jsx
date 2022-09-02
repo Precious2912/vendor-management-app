@@ -33,7 +33,8 @@ const Form = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (Object.keys(errors).length === 0) {
-      if (UserLogin) {
+      if (UserLogin)
+       {
         axios
           .post("/users/login", {
             email: formData.email,
@@ -65,14 +66,50 @@ const Form = ({
             toast.error("Incorrect credentials");
           });
       } else if (AdminSignup) {
-        // admin signup
+        axios
+        .post("/admin/register", formData)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res);
+            navigate("/admin/login");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       } else if (AdminLogin) {
-        // admin login
+        axios
+          .post("/admin/login", {
+            email: formData.email,
+            password: formData.password,
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              console.log(res);
+              login(res.data.fullName, res.data.id, res.data.token);
+              navigate("/admin/dashboard");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else if (VendorLogin) {
-        // vendor login
-      } else if (VendorSignup) {
-        // vendor signup
-      }
+        axios
+          .post("/vendors/login", {
+            email: formData.email,
+            password: formData.password,
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              console.log(res);
+              login(res.data.fullName, res.data.id, res.data.token);
+              navigate("/vendor/dashboard");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } 
     }
   };
 
@@ -147,6 +184,7 @@ const Form = ({
             )}
           </div>
         )}
+
         <div>
           <label htmlFor="password"></label>
           <input

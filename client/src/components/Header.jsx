@@ -53,7 +53,8 @@ const Header = ({ home, admin, vendor, orders }) => {
           }}
         >
           Logout
-        </button> </div>
+        </button>{" "}
+      </div>
     </HeaderStyle>
   );
 };
