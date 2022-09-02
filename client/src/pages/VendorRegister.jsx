@@ -1,6 +1,6 @@
 import React from "react";
-import Form from "../components/Form";
 import Hero from "../components/Hero";
+import VendorSignUpForm from "../components/VendorSignUpForm";
 import { HeroStyle } from "../styles/Hero";
 import { RegisterBodyStyle } from "../styles/RegisterBody";
 import { Container } from "../styles/RegisterStyle";
@@ -12,7 +12,8 @@ const VendorRegister = () => {
         <HeroStyle>
           <Hero />
         </HeroStyle>
-        <Form VendorSignup signup />
+        {/* <Form VendorSignup signup /> */}
+        <VendorSignUpForm />
       </Container>
     </RegisterBodyStyle>
   );
