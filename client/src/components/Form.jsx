@@ -29,6 +29,7 @@ const Form = ({
   const navigate = useNavigate();
   const { login } = UseAuth();
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (Object.keys(errors).length === 0) {
@@ -99,7 +100,8 @@ const Form = ({
           .post("/vendors/login", {
             email: formData.email,
             password: formData.password,
-          })
+          }
+          )
           .then((res) => {
             if (res.status === 201) {
               console.log(res);
