@@ -21,7 +21,6 @@ import MealCard from "../components/MealCard";
 import { userOrderState } from "../atoms/userAtom";
 import { filteredMealsState, searchInputState } from "../atoms/filteredMeals";
 
-
 const dayOfTheWeek = new Date().getDay();
 
 const days = [
@@ -33,8 +32,6 @@ const days = [
   "Friday",
   "Saturday",
 ];
-
-
 
 export const HomePage = () => {
   const regularMeals = useRecoilValue(regularMealsState);
@@ -52,14 +49,14 @@ export const HomePage = () => {
   const [premiumLunches, setPremiumLunches] =
     useRecoilState(premiumLunchesState);
 
-    // const [userOrder, setUserOrders] = useRecoilState(userOrderState)
-    const [filter, setfilter] = useRecoilState(filteredMealsState);
-    const [searchInput, setSearchInput] = useRecoilState(searchInputState);
+  // const [userOrder, setUserOrders] = useRecoilState(userOrderState)
+  const [filter, setfilter] = useRecoilState(filteredMealsState);
+  const searchInput = useRecoilValue(searchInputState);
 
   useEffect(() => {
     axios.get("/getallfood").then((res) => {
       setAllMeals(res.data.record);
-      if(searchInput) {
+      if (searchInput) {
         setBreakfasts(
           filter.filter(
             (meal) =>
@@ -126,7 +123,6 @@ export const HomePage = () => {
               meal.dayServed === days[dayOfTheWeek]
           )
         );
-
       } else {
         setPremiumLunches(
           res.data.record.filter(
@@ -137,17 +133,13 @@ export const HomePage = () => {
           )
         );
       }
-
-
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   // console.log(allMeals);
   // console.log(premiumLunches);
 
-  console.log({Lunches})
-  console.log({filter})
   return (
     <HomeStyle>
       <Header home />

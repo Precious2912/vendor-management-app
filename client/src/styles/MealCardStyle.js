@@ -70,6 +70,15 @@ export const MealCardStyle = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0.3rem;
+    /* margin-top: 0.3rem; */
+  }
+
+  .price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #c85c5c;
   }
 `;
+
+//c85c5c
+//f9975d

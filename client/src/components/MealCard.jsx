@@ -19,6 +19,7 @@ const MealCard = ({ meal, breakfast }) => {
     <MealCardStyle>
       {regularMeals && (
         <div
+          className="mealCard"
           onClick={() => {
             navigate(`/product/${meal.id}`);
           }}
@@ -53,41 +54,44 @@ const MealCard = ({ meal, breakfast }) => {
       )}
 
       {premiumMeals && (
-        <div
-          onClick={() => {
-            navigate(`/product/${meal.id}`);
-          }}
-        >
-          <div className="image-and-select">
-            <img
-              className="meal-image"
-              src={meal.image}
-              alt={meal.description}
-            />
-            <button
-              className="select-btn"
-              disabled={
-                breakfast
-                  ? currentHour > 9
-                    ? true
-                    : false
-                  : currentHour > 9
-                  ? false
-                  : true
-              }
-              onClick={() => {
-                setUserOrders([meal]);
-              }}
-            >
-              Pay for Meal
-            </button>
+        <>
+          <div
+            className="mealCard"
+            onClick={() => {
+              navigate(`/product/${meal.id}`);
+            }}
+          >
+            <div className="image-and-select">
+              <img
+                className="meal-image"
+                src={meal.image}
+                alt={meal.description}
+              />
+              <button
+                className="select-btn"
+                disabled={
+                  breakfast
+                    ? currentHour > 9 && currentHour < 14
+                      ? true
+                      : false
+                    : currentHour > 9 && currentHour < 14
+                    ? false
+                    : true
+                }
+                onClick={() => {
+                  setUserOrders([meal]);
+                }}
+              >
+                Pay for Meal
+              </button>
+            </div>
+            <div className="name-and-price">
+              <h4>{meal.name}</h4>
+              <p className="price">₦{meal.price}</p>
+            </div>
+            <p className="description">{meal.description}</p>
           </div>
-          <div className="name-and-price">
-            <h4>{meal.name}</h4>
-            <p>{meal.price}</p>
-          </div>
-          <p>{meal.description}</p>
-        </div>
+        </>
       )}
     </MealCardStyle>
   );
