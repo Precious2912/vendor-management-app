@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateMenu = exports.updateVendorRecord = exports.getAllVendorDetails = exports.getAllDetailsWithPendingStatus = exports.updateOrderStatus = exports.LoginVendor = exports.RegisterVendor = exports.getAllDetailsWithInactiveStatus = exports.getAllDetailsWithActiveStatus = exports.AddFoodToMenu = void 0;
+exports.removeMenu = exports.updateMenu = exports.updateVendorRecord = exports.getAllVendorDetails = exports.getAllDetailsWithPendingStatus = exports.updateOrderStatus = exports.LoginVendor = exports.RegisterVendor = exports.getAllDetailsWithInactiveStatus = exports.getAllDetailsWithActiveStatus = exports.AddFoodToMenu = void 0;
 const uuid_1 = require("uuid");
 const utils_1 = require("../utils/utils");
 const vendors_1 = require("../models/vendors");
@@ -355,3 +355,25 @@ async function updateMenu(req, res, next) {
     }
 }
 exports.updateMenu = updateMenu;
+async function removeMenu(req, res, next) {
+    try {
+        const { id } = req.params;
+        const record = await menu_1.MenuInstance.findOne({ where: { id } });
+        if (!record) {
+            return res.status(404).json({
+                msg: "Cannot find the specified menu",
+            });
+        }
+        const deletedRecord = await record.destroy();
+        res.status(201).json({
+            message: "You have successfully removed this menu",
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: "failed to delete",
+            route: "/deletefood/:id",
+        });
+    }
+}
+exports.removeMenu = removeMenu;

@@ -412,3 +412,28 @@ export async function updateMenu(
     });
   }
 }
+
+export async function removeMenu(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id } = req.params;
+    const record = await MenuInstance.findOne({ where: { id } });
+    if (!record) {
+      return res.status(404).json({
+        msg: "Cannot find the specified menu",
+      });
+    }
+    const deletedRecord = await record.destroy();
+    res.status(201).json({
+      message: "You have successfully removed this menu",
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: "failed to delete",
+      route: "/deletefood/:id",
+    });
+  }
+}
