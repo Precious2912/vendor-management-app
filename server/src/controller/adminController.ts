@@ -92,14 +92,14 @@ export async function LoginAdmin(
     }
 
     if (validAdmin) {
-      res.cookie("authorization", token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24,
-      });
-      res.cookie("id", id, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24,
-      });
+      // res.cookie("authorization", token, {
+      //   httpOnly: true,
+      //   maxAge: 1000 * 60 * 60 * 24,
+      // });
+      // res.cookie("id", id, {
+      //   httpOnly: true,
+      //   maxAge: 1000 * 60 * 60 * 24,
+      // });
       res.status(201).json({
         message: "Successfully logged in",
         token,

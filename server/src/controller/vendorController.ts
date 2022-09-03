@@ -163,13 +163,13 @@ export async function RegisterVendor(
       password: passwordHash,
       verified: false,
     });
-    res.status(201).json({
+    return res.status(201).json({
       msg: "You have successfully registered",
       record: record,
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json({
+    return res.status(500).json({
       msg: "failed to register",
       route: "/register",
     });

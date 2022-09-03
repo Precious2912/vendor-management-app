@@ -11,13 +11,13 @@ export async function authUser(
   next: NextFunction
 ) {
   try {
-    const auth = req.cookies.authorization;
+    const auth = req.headers.authorization;
     if (!auth) {
       res.status(401).json({
         Error: "Kindly login from the user login page",
       });
     }
-    const token = auth;
+    const token = auth.slice(7, auth.length);
     let verified = jwt.verify(token, secret);
 
     if (!verified) {
@@ -53,13 +53,13 @@ export async function authAdmin(
   next: NextFunction
 ) {
   try {
-    const auth = req.cookies.authorization;
+    const auth = req.headers.authorization;
     if (!auth) {
       res.status(401).json({
         Error: "Kindly login from the Admin login page",
       });
     }
-    const token = auth;
+    const token = auth.slice(7, auth.length);
     let verified = jwt.verify(token, secret);
 
     if (!verified) {
@@ -95,14 +95,14 @@ export async function authVendor(
   next: NextFunction
 ) {
   try {
-    const auth = req.cookies.authorization;
+    const auth = req.headers.authorization;
     if (!auth) {
       res.status(401).json({
         Error: "Kindly login from the vendor login page",
       });
     }
 
-    const token = auth;
+    const token = auth.slice(7, auth.length);
     let verified = jwt.verify(token, secret);
 
     if (!verified) {
@@ -110,6 +110,7 @@ export async function authVendor(
         Error: "Verification failed, access denied",
       });
     }
+
     const { id } = verified as { [key: string]: string };
 
     const vendor = await VendorsInstance.findOne({ where: { id } });

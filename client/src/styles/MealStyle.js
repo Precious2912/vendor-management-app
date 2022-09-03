@@ -8,4 +8,19 @@ export const MealStyle = styled.div`
     text-align: center;
     text-transform: uppercase;
   }
+
+  /* p {
+    text-align: center;
+    margin-top: 2rem;
+  } */
+  .redirect-text {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .subtext {
+    cursor: pointer;
+    color: #c85c5c;
+    text-decoration: underline;
+  }
 `;

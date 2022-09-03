@@ -9,7 +9,9 @@ import AdminLogin from "../pages/AdminLogin";
 import AdminRegister from "../pages/AdminRegister";
 import VendorRegister from "../pages/VendorRegister";
 import VendorLogin from "../pages/VendorLogin";
-import { AdminDashboard  } from "../pages/AdminDashboard";
+import { AdminDashboard } from "../pages/AdminDashboard";
+import ProductDetailPage from "../pages/ProductDetailPage";
+import VendorDashboardPage from "../pages/VendorDashboardPage";
 
 export const BaseRoute = () => {
   return (
@@ -21,11 +23,13 @@ export const BaseRoute = () => {
       <Route path="/admin/register" element={<AdminRegister />}></Route>
       <Route path="/vendor/register" element={<VendorRegister />}></Route>
       <Route path="/vendor/login" element={<VendorLogin />}></Route>
-      <Route path="admin/dashboard" element={<AdminDashboard />}></Route>
+      <Route path="product/:id" element={<ProductDetailPage />}></Route>
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="admin/dashboard" element={<AdminDashboard />} />
+        <Route path="vendor/dashboard" element={<VendorDashboardPage />} />
       </Route>
 
       {/* Error Route */}
