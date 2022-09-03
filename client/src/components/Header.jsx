@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { AllMealsState } from "../atoms/mealAtom";
 import { useRecoilState } from "recoil";
 import { userInfoState } from "../atoms/userAtom";
-import { UseAuth } from "../hooks/UseAuth";
 import { filteredMealsState, searchInputState } from "../atoms/filteredMeals";
 
 const Header = ({ home, admin, vendor, productDetails }) => {
@@ -32,6 +31,8 @@ const Header = ({ home, admin, vendor, productDetails }) => {
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
+  const role = JSON.parse(localStorage.getItem("role"));
+
   useEffect(() => {
     setLoggedInUser(user);
   }, []);
@@ -52,12 +53,16 @@ const Header = ({ home, admin, vendor, productDetails }) => {
         </div>
       )}
 
-      {admin && <p>Dashboard</p>}
-      {vendor && <p>Dashboard</p>}
+      {admin && <p>Admin Dashboard</p>}
+      {vendor && <p>Vendor Dashboard</p>}
 
       <div className="user-actions">
         <div>
-          <p className="greeting">Hello, {user.fullName} 👋🏼 </p>
+          {role === "vendor" ? (
+            <p className="greeting">Hello, {user.name} 👋🏼 </p>
+          ) : (
+            <p className="greeting">Hello, {user.fullName} 👋🏼 </p>
+          )}
         </div>
         <button
           className="logout-btn"

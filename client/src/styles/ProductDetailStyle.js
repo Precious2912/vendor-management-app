@@ -34,13 +34,14 @@ export const ProductDetailStyle = styled.div`
 
   .product-image {
     width: 400px;
-    height: 380px;
+    height: 330px;
     object-fit: cover;
     margin: 0 0 1rem 0;
     box-shadow: -2px 1px 11px 0px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: -2px 1px 11px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: -2px 1px 11px 0px rgba(0, 0, 0, 0.75);
     border-radius: 10px;
+    cursor: pointer;
   }
 
   .price {
@@ -68,6 +69,24 @@ export const ProductDetailStyle = styled.div`
     padding: 0.5rem 1rem;
     border-radius: 5px;
     border: 1px solid #f9975d;
+    transition: ease-in-out 0.15s;
     /* background-color: #f9975d; */
+  }
+
+  .btn:hover {
+    background-color: #f9975d;
+  }
+
+  .paystack-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.65);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
   }
 `;

@@ -116,14 +116,14 @@ exports.updateVendorSchema = joi_1.default.object().keys({
         .required(),
 });
 exports.updateMenuSchema = joi_1.default.object().keys({
-    name: joi_1.default.string().required(),
-    description: joi_1.default.string().required(),
-    image: joi_1.default.string().required(),
-    category: joi_1.default.string().required(),
-    premium: joi_1.default.boolean().required(),
-    dayServed: joi_1.default.string().lowercase().required(),
-    price: joi_1.default.number().required(),
-    vendorId: joi_1.default.string().required(),
+    name: joi_1.default.string(),
+    description: joi_1.default.string(),
+    image: joi_1.default.string(),
+    category: joi_1.default.string(),
+    premium: joi_1.default.boolean(),
+    dayServed: joi_1.default.string().lowercase(),
+    price: joi_1.default.number(),
+    vendorId: joi_1.default.string(),
 });
 exports.options = {
     abortEarly: false,

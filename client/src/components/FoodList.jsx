@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   foodListState,
@@ -10,13 +10,36 @@ import { GridContainer } from "../styles/GridContainer";
 import MealCard from "./MealCard";
 import { AiOutlineClose } from "react-icons/ai";
 import Modal from "./Modal";
+import axios from "../api/axios";
+import VendorMealCard from "./VendorMealCard";
+import { editPageActiveState } from "../atoms/editPageAtom";
 
 const FoodList = () => {
+  const vendor = JSON.parse(localStorage.getItem("user"));
+
+  // console.log(vendor.id);
+
   const foodListActive = useRecoilValue(foodListState);
   const ordersPlacedActive = useRecoilValue(ordersPlacedState);
+  const editPageActive = useRecoilValue(editPageActiveState);
   const [modalActive, setModalActive] = useRecoilState(modalActiveState);
+  const [vendorDetails, setVendorDetails] = useState("");
+  const [vendorFood, setVendorFood] = useState([]);
 
+  // console.log(vendorFood.map((food) => food.name));
   const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    axios
+      .get(`vendors/getAllVendorDetails/${vendor.id}`)
+      .then((res) => {
+        setVendorDetails(res.data.record);
+        setVendorFood(res.data.record.menu);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [editPageActive]);
 
   function useOutsideAlerter(ref) {
     useEffect(() => {
@@ -43,7 +66,10 @@ const FoodList = () => {
       {foodListActive && (
         <>
           <div className="actions">
-            <button onClick={() => setModalActive(true)}>
+            <button
+              className="create-a-meal"
+              onClick={() => setModalActive(true)}
+            >
               Create A New Meal
             </button>
           </div>
@@ -53,8 +79,10 @@ const FoodList = () => {
       )}
       {ordersPlacedActive && <h3>Orders Placed</h3>}
       <div className="container">
-        <GridContainer>
-          {foodListActive && <>{/* <MealCard vendor /> */}</>}
+        <GridContainer vendor>
+          {vendorFood.map((food) => (
+            <VendorMealCard key={food.id} meal={food} />
+          ))}
         </GridContainer>
       </div>
     </FoodListStyle>
@@ -62,5 +90,3 @@ const FoodList = () => {
 };
 
 export default FoodList;
-
-// AiFillCloseCircle

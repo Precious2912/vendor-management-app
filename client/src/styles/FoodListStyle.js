@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const FoodListStyle = styled.div`
   display: relative;
+
   h3 {
     text-align: center;
   }
@@ -17,8 +18,18 @@ export const FoodListStyle = styled.div`
     outline: inherit;
   }
 
+  .container {
+    display: flex;
+    justify-content: center;
+  }
+  .actions {
+    display: flex;
+    justify-content: center;
+  }
+
   .actions button {
     background-color: #fbd148;
+    margin: 2rem 0;
     padding: 0.5rem 1rem;
     border-radius: 0.7rem;
     transition: ease-in-out 0.15s;
@@ -27,6 +38,7 @@ export const FoodListStyle = styled.div`
   .actions button:hover {
     background-color: #b2ea70;
   }
+
   /* .modal {
     position: fixed;
     top: 0;

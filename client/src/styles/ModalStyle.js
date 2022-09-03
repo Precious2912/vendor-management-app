@@ -18,6 +18,17 @@ export const ModalStyle = styled.div`
     margin-bottom: 2rem;
   }
 
+  input {
+    outline: none;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    font-size: 1rem;
+  }
+  textarea {
+    outline: none;
+  }
+
   .input {
     display: flex;
     flex-direction: column;
@@ -50,6 +61,12 @@ export const ModalStyle = styled.div`
     transition: ease-in-out 0.15s;
   }
 
+  .cancel-btn {
+    background-color: #c85c5c;
+    padding: 0.5rem 1rem;
+    border-radius: 0.7rem;
+    transition: ease-in-out 0.15s;
+  }
   .submit-btn:hover {
     opacity: 0.8;
   }
@@ -60,5 +77,23 @@ export const ModalStyle = styled.div`
 
   .action-btns {
     display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .action-btns:hover {
+    opacity: 0.8;
+  }
+  .action-btns:active {
+    opacity: 0.6;
+  }
+
+  .meal-category {
+    display: flex;
+    gap: 2rem;
+  }
+  .day-served {
+    display: flex;
+    gap: 2rem;
   }
 `;

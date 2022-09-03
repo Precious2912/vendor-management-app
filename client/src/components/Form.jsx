@@ -29,7 +29,6 @@ const Form = ({
   const navigate = useNavigate();
   const { login } = UseAuth();
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -46,6 +45,7 @@ const Form = ({
               login(res.data.fullName, res.data.id, res.data.token);
               localStorage.setItem("token", JSON.stringify(res.data.token));
               localStorage.setItem("user", JSON.stringify(res.data.User));
+              localStorage.setItem("role", JSON.stringify("user"));
               navigate("/");
             }
           })
@@ -104,6 +104,7 @@ const Form = ({
               login(res.data.fullName, res.data.id, res.data.token);
               localStorage.setItem("token", JSON.stringify(res.data.token));
               localStorage.setItem("user", JSON.stringify(res.data.Admin));
+              localStorage.setItem("role", JSON.stringify("admin"));
               navigate("/admin/dashboard");
             }
           })
@@ -116,14 +117,14 @@ const Form = ({
           .post("/vendors/login", {
             email: formData.email,
             password: formData.password,
-          }
-          )
+          })
           .then((res) => {
             if (res.status === 201) {
               console.log(res);
               login(res.data.name, res.data.id, res.data.token);
               localStorage.setItem("token", JSON.stringify(res.data.token));
               localStorage.setItem("user", JSON.stringify(res.data.Vendor));
+              localStorage.setItem("role", JSON.stringify("vendor"));
               navigate("/vendor/dashboard");
             }
           })

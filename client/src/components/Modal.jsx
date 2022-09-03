@@ -3,8 +3,9 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useRecoilState } from "recoil";
 import { modalActiveState } from "../atoms/vendorAtom";
 import { ModalStyle } from "../styles/ModalStyle";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import { toast, ToastContainer } from "react-toastify";
 
 const Modal = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -25,25 +26,38 @@ const Modal = () => {
   const token = JSON.parse(localStorage.getItem("token"));
 
   const handleCreateMeal = async (e) => {
-    try {
-      e.preventDefault();
-      axios
-        .post("/vendors/addFood", formData, {
-          method: "POST",
-          headers: {
-            contentType: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          if (res.status === 201) {
-            console.log(res);
-            setModalActive(false);
-          }
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    e.preventDefault();
+    axios
+      .post("/vendors/addFood", formData, {
+        method: "POST",
+        headers: {
+          contentType: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 201) {
+          console.log(res);
+          toast.success("Meal Added");
+          setModalActive(false);
+        }
+      })
+      .catch((err) => {
+        if (err.response.data.Error === "Vendor verification failed") {
+          toast.error("User not a verified vendor");
+        } else if (
+          err.response.data.Error === "dayServed is not allowed to be empty"
+        ) {
+          toast.error("Day served is required");
+        } else if (err.response.data.Error === "premium must be a boolean") {
+          toast.error("Include premium status");
+        } else if (
+          err.response.data.Error === "category is not allowed to be empty"
+        ) {
+          toast.error("Please choose a category");
+        }
+        console.log(err.response.data.Error);
+      });
   };
 
   const wrapperRef = useRef(null);
@@ -70,11 +84,12 @@ const Modal = () => {
 
   return (
     <ModalStyle>
+      <ToastContainer />
       <div className="modal-content" ref={wrapperRef}>
         <div className="heading">
           <h3>Create Meal</h3>
           <AiOutlineClose
-            color={"#cf1919"}
+            color={"#c85c5c"}
             size={35}
             onClick={() => {
               setModalActive(false);
@@ -122,7 +137,7 @@ const Modal = () => {
           {/* Meal Image */}
 
           <div className="input">
-            <label htmlFor="name">Image</label>
+            <label htmlFor="name">Image Link</label>
             <input
               type="text"
               name="image"
@@ -137,11 +152,12 @@ const Modal = () => {
           </div>
 
           {/* Meal Category */}
-          <div>
+          <div className="meal-category">
+            <label htmlFor="description">Meal Category</label>
             <input
               type="radio"
               name="category"
-              value="Regular"
+              value="Breakfast"
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -153,7 +169,7 @@ const Modal = () => {
             <input
               type="radio"
               name="category"
-              value="Premium"
+              value="Lunch"
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -166,7 +182,8 @@ const Modal = () => {
 
           {/* Meal Premium status */}
 
-          <div>
+          <div className="meal-category">
+            <label htmlFor="description">Meal Class</label>
             <input
               type="radio"
               name="premium"
@@ -174,7 +191,7 @@ const Modal = () => {
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  premium: Boolean(e.target.value),
+                  premium: e.target.value === "Regular" ? false : true,
                 })
               }
             />
@@ -210,20 +227,26 @@ const Modal = () => {
 
           {/* Day Served */}
 
-          <div>
+          <div className="day-served">
             <label htmlFor="name">Day Served</label>
-            <select name="days" id="days" required 
-            onChange={(e) => 
-              setFormData({
-                ...formData, dayServed: e.target.value})}>
-    
+            <select
+              name="days"
+              id="days"
+              required
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  dayServed: !e.target.value ? "Monday" : e.target.value,
+                })
+              }
+            >
               <option value="Monday">Monday</option>
-              <option value="Monday">Tuesday</option>
-              <option value="Monday">Wednesday</option>
-              <option value="Monday">Thursday</option>
-              <option value="Monday">Friday</option>
-              <option value="Monday">Saturday</option>
-              <option value="Monday">Sunday</option> 
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
             </select>
           </div>
 
@@ -251,3 +274,5 @@ const Modal = () => {
 };
 
 export default Modal;
+
+// Vendor verification failed
