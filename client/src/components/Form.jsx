@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "../api/axios";
-//import validation from "../utils/validation";
 import { useNavigate, Link } from "react-router-dom";
 import { UseAuth } from "../hooks/UseAuth";
 import { FormStyle } from "../styles/FormStyle";
@@ -30,11 +29,12 @@ const Form = ({
   const navigate = useNavigate();
   const { login } = UseAuth();
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     if (Object.keys(errors).length === 0) {
-      if (UserLogin)
-       {
+      if (UserLogin) {
         axios
           .post("/users/login", {
             email: formData.email,
@@ -57,26 +57,41 @@ const Form = ({
           .post("/users/register", formData)
           .then((res) => {
             if (res.status === 201) {
-              console.log(res);
+              // console.log(res);
               navigate("/login");
             }
           })
           .catch((err) => {
-            console.log(err);
-            toast.error("Incorrect credentials");
+            // console.log(err.response.data.msg);
+            if (err.response.data.msg === "Phone number is used") {
+              toast.error("Phone Number Already Used");
+            } else if (
+              err.response.data.msg ===
+              "Email is used, please enter another email"
+            ) {
+              toast.error("Email already used");
+            }
           });
       } else if (AdminSignup) {
         axios
-        .post("/admin/register", formData)
-        .then((res) => {
-          if (res.status === 200) {
-            console.log(res);
-            navigate("/admin/login");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          .post("/admin/register", formData)
+          .then((res) => {
+            if (res.status === 201) {
+              console.log(res);
+              navigate("/admin/login");
+            }
+          })
+          .catch((err) => {
+            console.log(err.response.data.msg);
+            if (
+              err.response.data.msg ===
+              "Email is used, please enter another email"
+            ) {
+              toast.error("Email already used");
+            } else if (err.response.data.msg === "Phone number is used") {
+              toast.error("Phone Number Already Used");
+            }
+          });
       } else if (AdminLogin) {
         axios
           .post("/admin/login", {
@@ -84,38 +99,45 @@ const Form = ({
             password: formData.password,
           })
           .then((res) => {
-            if (res.status === 200) {
+            if (res.status === 201) {
               console.log(res);
               login(res.data.fullName, res.data.id, res.data.token);
+              localStorage.setItem("token", JSON.stringify(res.data.token));
+              localStorage.setItem("user", JSON.stringify(res.data.Admin));
               navigate("/admin/dashboard");
             }
           })
           .catch((err) => {
             console.log(err);
+            toast.error("invalid email or password");
           });
       } else if (VendorLogin) {
         axios
           .post("/vendors/login", {
             email: formData.email,
             password: formData.password,
-          })
+          }
+          )
           .then((res) => {
-            if (res.status === 200) {
+            if (res.status === 201) {
               console.log(res);
-              login(res.data.fullName, res.data.id, res.data.token);
+              login(res.data.name, res.data.id, res.data.token);
+              localStorage.setItem("token", JSON.stringify(res.data.token));
+              localStorage.setItem("user", JSON.stringify(res.data.Vendor));
               navigate("/vendor/dashboard");
             }
           })
           .catch((err) => {
             console.log(err);
+            toast.error("invalid email or password");
           });
-      } 
+      }
     }
   };
 
   return (
     <FormStyle onSubmit={handleSubmit}>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <h2>
         {UserLogin
           ? "Log In"

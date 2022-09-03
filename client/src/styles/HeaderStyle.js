@@ -45,12 +45,13 @@ export const HeaderStyle = styled.header`
 
   .user-actions {
     display: flex;
+    align-items: center;
     gap: 2rem;
   }
 
   .user-actions button {
     background-color: #f9975d;
-    padding: 0rem 2rem;
+    padding: 0.5rem 1rem;
     border-radius: 0.5rem;
   }
 
@@ -64,5 +65,9 @@ export const HeaderStyle = styled.header`
   .logo {
     font-size: 1.5rem;
     font-family: "Playfair Display", serif;
+  }
+
+  .greeting {
+    margin: 0;
   }
 `;

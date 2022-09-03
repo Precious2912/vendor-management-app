@@ -8,7 +8,7 @@ import { userInfoState } from "../atoms/userAtom";
 import { UseAuth } from "../hooks/UseAuth";
 import { filteredMealsState, searchInputState } from "../atoms/filteredMeals";
 
-const Header = ({ home, admin, vendor, orders }) => {
+const Header = ({ home, admin, vendor, productDetails }) => {
   const [allMeals, setAllMeals] = useRecoilState(AllMealsState);
   const [loggedInUser, setLoggedInUser] = useRecoilState(userInfoState);
   const [filtered, setfiltered] = useRecoilState(filteredMealsState);
@@ -16,17 +16,18 @@ const Header = ({ home, admin, vendor, orders }) => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
     if (e.target.value) {
-      setSearchInput(true)
+      setSearchInput(true);
     } else {
-      setSearchInput(false)
+      setSearchInput(false);
     }
     // setSearch(e.target.value)
-    const filteredMeals = allMeals.filter((meal) => meal.name.toLowerCase().includes(e.target.value.toLowerCase()))
+    const filteredMeals = allMeals.filter((meal) =>
+      meal.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
     // setAllMeals(filteredMeals);
-    setfiltered(filteredMeals)
-    console.log(filtered);
+    setfiltered(filteredMeals);
+    // console.log(filtered);
   };
   const navigate = useNavigate();
 
@@ -53,12 +54,13 @@ const Header = ({ home, admin, vendor, orders }) => {
 
       {admin && <p>Dashboard</p>}
       {vendor && <p>Dashboard</p>}
-      {orders && <p>Your Orders</p>}
+
       <div className="user-actions">
         <div>
-          <p>Hello {user.fullName.split(" ")[0]} 👋🏼 </p>
+          <p className="greeting">Hello, {user.fullName} 👋🏼 </p>
         </div>
         <button
+          className="logout-btn"
           onClick={() => {
             localStorage.clear();
             navigate("/login");

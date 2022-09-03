@@ -4,10 +4,12 @@ import Hero from "../components/Hero";
 import { HeroStyle } from "../styles/Hero";
 import { RegisterBodyStyle } from "../styles/RegisterBody";
 import { Container } from "../styles/RegisterStyle";
+import { ToastContainer } from "react-toastify";
 
 const LoginPage = () => {
   return (
     <RegisterBodyStyle>
+      <ToastContainer />
       <Container>
         <HeroStyle>
           <Hero />
@@ -17,6 +19,5 @@ const LoginPage = () => {
     </RegisterBodyStyle>
   );
 };
-
 
 export default LoginPage;

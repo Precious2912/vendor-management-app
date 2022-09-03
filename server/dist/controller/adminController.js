@@ -50,6 +50,7 @@ async function RegisterAdmin(req, res, next) {
         });
     }
     catch (err) {
+        console.log(err);
         res.status(500).json({
             msg: "failed to register",
             route: "/register",

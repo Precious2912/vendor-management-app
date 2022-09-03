@@ -12,6 +12,7 @@ import bcrypt from "bcryptjs";
 import { VendorsInstance } from "../models/vendors";
 import { MenuInstance } from "../models/menu";
 import { OrderInstance } from "../models/orders";
+import { error } from "console";
 
 export async function RegisterAdmin(
   req: Request,
@@ -57,6 +58,7 @@ export async function RegisterAdmin(
       record: record,
     });
   } catch (err) {
+    console.log(err)
     res.status(500).json({
       msg: "failed to register",
       route: "/register",
@@ -108,7 +110,6 @@ export async function LoginAdmin(
     }
   } catch (err) {
     console.log(err);
-
     res.status(500).json({
       msg: "failed to login",
       route: "/login",
