@@ -51,22 +51,44 @@ const Header = ({ home, admin, vendor, orders }) => {
         </div>
       )}
 
-      {admin && <p>Dashboard</p>}
-      {vendor && <p>Dashboard</p>}
-      {orders && <p>Your Orders</p>}
+      {admin && 
+      <>
+      <p>Dashboard</p>
       <div className="user-actions">
-        <div>
-          <p>Hello {user.fullName.split(" ")[0]} 👋🏼 </p>
-        </div>
-        <button
-          onClick={() => {
-            localStorage.clear();
-            navigate("/login");
-          }}
-        >
-          Logout
-        </button>{" "}
+      <div>
+        <p>Hello {user.fullName.split(" ")[0]} 👋🏼 </p>
       </div>
+      <button
+        onClick={() => {
+          localStorage.clear();
+          navigate("/login");
+        }}
+      >
+        Logout
+      </button>{" "}
+    </div>
+    </>
+      }
+      {vendor && 
+            <>
+            <p>Dashboard</p>
+            <div className="user-actions">
+            <div>
+              <p>Hello {user.name.split(" ")[0]} 👋🏼 </p>
+            </div>
+            <button
+              onClick={() => {
+                localStorage.clear();
+                navigate("/login");
+              }}
+            >
+              Logout
+            </button>{" "}
+          </div>
+          </>
+      }
+      {orders && <p>Your Orders</p>}
+
     </HeaderStyle>
   );
 };
