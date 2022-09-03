@@ -21,6 +21,8 @@ const EditMealPage = () => {
     price: product.price,
     image: product.image,
   };
+
+  const { name, description, price, image } = product;
   //   const [reqBody, setReqBody] = useState({
   //     name: product.name,
   //     description: product.description,
@@ -28,7 +30,6 @@ const EditMealPage = () => {
   //     image: product.image,
   //   });
 
-  console.log(product);
   useEffect(() => {
     axios.get(`/users/getOneMeal/${id}`).then((res) => {
       setProduct(res.data.record);
@@ -73,15 +74,22 @@ const EditMealPage = () => {
           />
           <button
             type="submit"
-            onSubmit={() => {
+            onClick={(e) => {
+              e.preventDefault();
               axios
-                .post(`/vendors/updatemenu/${id}`, reqBody)
-                .then((res) => {})
+                .post(`/vendors/updatemenu/${id}`, {
+                  name,
+                  description,
+                  price,
+                  image,
+                })
+                .then((res) => {
+                  console.log(res);
+                  navigate("/vendor/dashboard");
+                })
                 .catch((err) => {
                   console.log(err);
                 });
-              navigate("/vendor/dashboard");
-              setEditActive(false);
             }}
           >
             Edit

@@ -48,6 +48,8 @@ const VendorMealCard = ({ meal }) => {
                     .delete(`/vendors/deletefood/${meal.id}`)
                     .then((res) => {
                       console.log(res);
+                      setShowModal(false);
+                      window.location.reload();
                     })
                     .catch((err) => {
                       console.log(err);
@@ -56,7 +58,15 @@ const VendorMealCard = ({ meal }) => {
               >
                 YES
               </button>
-              <button className="cancel">NO</button>
+              <button
+                className="cancel"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowModal(false);
+                }}
+              >
+                NO
+              </button>
             </form>
           </div>
         </div>
