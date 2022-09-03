@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { FormStyle } from "../styles/FormStyle";
 import { useNavigate, Link } from "react-router-dom";
-import { UseAuth } from "../hooks/UseAuth";
+
 import axios from "../api/axios";
+import { toast, ToastContainer } from "react-toastify";
 
 const VendorSignUpForm = () => {
   const [formData, setFormData] = useState({
@@ -17,26 +18,36 @@ const VendorSignUpForm = () => {
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  //   const { login } = UseAuth();
 
-  const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-      // if (Object.keys(errors).length === 0) {
-      axios.post("/vendors/register", formData).then((res) => {
-        if (res.status === 201) {
-          console.log(res);
-          navigate("/vendor/login");
-        }
-      });
-    } catch (err) {
-      console.log(err);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (Object.keys(errors).length === 0) {
+      axios
+        .post("/vendors/register", formData)
+        .then((res) => {
+          if (res.status === 201) {
+            console.log(res);
+            navigate("/vendor/login");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          if (
+            err.response.data.msg ===
+            "Email is used, please enter another email"
+          ) {
+            toast.error("Email already used");
+          } else if (err.response.data.msg === "Phone number is used") {
+            toast.error("Phone Number Already Used");
+          }
+        });
     }
-    // }
   };
 
   return (
-    <FormStyle onSubmit={handleSubmit}>
+    <FormStyle onSubmit={handleSubmit} vendor>
+      <ToastContainer />
       <h2>Sign Up as a Vendor</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -134,12 +145,6 @@ const VendorSignUpForm = () => {
         <button type="submit" className="action-btn">
           Sign Up
         </button>
-        <h4>
-          Already have an account? Login{" "}
-          <Link to={"/vendor/login"} className="link">
-            HERE
-          </Link>
-        </h4>
       </form>
     </FormStyle>
   );

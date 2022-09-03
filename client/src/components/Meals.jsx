@@ -12,13 +12,19 @@ import MealCard from "./MealCard";
 const Meals = ({ breakfast, premiumBreakfast, lunch, premiumLunch }) => {
   const [regularActive, setRegularActive] = useRecoilState(regularMealsState);
   const [premiumActive, setPremiumActive] = useRecoilState(premiumMealsState);
+  const regularMeals = useRecoilValue(regularMealsState);
+  const premiumMeals = useRecoilValue(premiumMealsState);
+
   const [yourOrdersActive, setYourOrdersActive] =
     useRecoilState(yourOrderStates);
 
   return (
     <MealStyle>
       <h3>
-        {breakfast || premiumBreakfast ? "Breakfast Choices" : "Lunch Choices"}
+        {breakfast && "Breakfast Choices"}
+        {premiumBreakfast && "Premium Breakfast Choices"}
+        {lunch && "Lunch Choices"}
+        {premiumLunch && "Premium Lunch Choices"}
       </h3>
       <GridContainer>
         {breakfast &&

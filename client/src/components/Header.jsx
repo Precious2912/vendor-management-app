@@ -8,7 +8,7 @@ import { userInfoState } from "../atoms/userAtom";
 import { UseAuth } from "../hooks/UseAuth";
 import { filteredMealsState, searchInputState } from "../atoms/filteredMeals";
 
-const Header = ({ home, admin, vendor, orders }) => {
+const Header = ({ home, admin, vendor, productDetails }) => {
   const [allMeals, setAllMeals] = useRecoilState(AllMealsState);
   const [loggedInUser, setLoggedInUser] = useRecoilState(userInfoState);
   const [filtered, setfiltered] = useRecoilState(filteredMealsState);
@@ -16,7 +16,6 @@ const Header = ({ home, admin, vendor, orders }) => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
     if (e.target.value) {
       setSearchInput(true);
     } else {
@@ -28,7 +27,7 @@ const Header = ({ home, admin, vendor, orders }) => {
     );
     // setAllMeals(filteredMeals);
     setfiltered(filteredMeals);
-    console.log(filtered);
+    // console.log(filtered);
   };
   const navigate = useNavigate();
 
@@ -43,68 +42,33 @@ const Header = ({ home, admin, vendor, orders }) => {
         <div className="logo">Sapa Kitchen</div>
       </Link>
       {home && (
-        <>
-          <div className="search">
-            <AiOutlineSearch size={20} color={"#565656"} />
-            <input
-              type="text"
-              placeholder="Search for a meal"
-              onChange={handleSearch}
-            />
-          </div>
-          <div className="user-actions">
-            <div>
-              <p>Hello {user.fullName.split(" ")[0]} 👋🏼 </p>
-            </div>
-            <button
-              onClick={() => {
-                localStorage.clear();
-                navigate("/login");
-              }}
-            >
-              Logout
-            </button>{" "}
-          </div>
-        </>
+        <div className="search">
+          <AiOutlineSearch size={20} color={"#565656"} />
+          <input
+            type="text"
+            placeholder="Search for a meal"
+            onChange={handleSearch}
+          />
+        </div>
       )}
 
-      {admin && (
-        <>
-          <p>Dashboard</p>
-          <div className="user-actions">
-            <div>
-              <p>Hello {user.fullName.split(" ")[0]} 👋🏼 </p>
-            </div>
-            <button
-              onClick={() => {
-                localStorage.clear();
-                navigate("/login");
-              }}
-            >
-              Logout
-            </button>{" "}
-          </div>
-        </>
-      )}
-      {vendor && (
-        <>
-          <p>Dashboard</p>
-          <div className="user-actions">
-            <div>
-              <p>Hello {user.name.split(" ")[0]} 👋🏼 </p>
-            </div>
-            <button
-              onClick={() => {
-                localStorage.clear();
-                navigate("/login");
-              }}
-            >
-              Logout
-            </button>{" "}
-          </div>
-        </>
-      )}
-      {orders && <p>Your Orders</p>}
+      {admin && <p>Dashboard</p>}
+      {vendor && <p>Dashboard</p>}
+
+      <div className="user-actions">
+        <div>
+          <p className="greeting">Hello, {user.fullName} 👋🏼 </p>
+        </div>
+        <button
+          className="logout-btn"
+          onClick={() => {
+            localStorage.clear();
+            navigate("/login");
+          }}
+        >
+          Logout
+        </button>{" "}
+      </div>
     </HeaderStyle>
   );
 };
