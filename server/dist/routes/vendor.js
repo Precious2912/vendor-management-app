@@ -19,4 +19,7 @@ router.get("/getInactiveMenu/:id", vendorController_1.getAllDetailsWithInactiveS
 router.get("/getPendingMenu/:id", vendorController_1.getAllDetailsWithPendingStatus);
 router.get("/getAllVendorDetails/:id", vendorController_1.getAllVendorDetails);
 router.get("/updateOrderStatus/:id", vendorController_1.updateOrderStatus);
+router.post("/updatevendor/:id", vendorController_1.updateVendorRecord);
+router.post("/updatemenu/:id", vendorController_1.updateMenu);
+router.delete("/deletefood/:id", vendorController_1.removeMenu);
 exports.default = router;

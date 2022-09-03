@@ -108,6 +108,29 @@ export const updateOrderStatusSchema = Joi.object().keys({
   orderStatus: Joi.string().lowercase().required(),
 });
 
+export const updateVendorSchema = Joi.object().keys({
+  name: Joi.string().required(),
+  ownedBy: Joi.string().required(),
+  address: Joi.string().required(),
+  email: Joi.string().trim().lowercase().required(),
+  phoneNumber: Joi.string()
+    .length(11)
+    .pattern(/^[0-9]+$/)
+    .required(),
+});
+
+export const updateMenuSchema = Joi.object().keys({
+  name: Joi.string().required(),
+  description: Joi.string().required(),
+  image: Joi.string().required(),
+  category: Joi.string().required(),
+  premium: Joi.boolean().required(),
+  dayServed: Joi.string().lowercase().required(),
+  price: Joi.number().required(),
+
+  vendorId: Joi.string().required(),
+});
+
 export const options = {
   abortEarly: false,
   errors: {

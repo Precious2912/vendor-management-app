@@ -135,7 +135,7 @@ export async function verifyVendor(
     const record = await VendorsInstance.findOne({ where: { id } });
     if (!record) {
       return res.status(404).json({
-        Error: "Cannot find existing course",
+        Error: "Cannot find existing vendor",
       });
     }
     const updatedrecord = await record.update({

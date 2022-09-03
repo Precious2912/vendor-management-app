@@ -8,6 +8,8 @@ import {
   createMenuSchema,
   updateOrderStatusSchema,
   options,
+  updateVendorSchema,
+  updateMenuSchema,
 } from "../utils/utils";
 import { VendorsInstance } from "../models/vendors";
 import { MenuInstance } from "../models/menu";
@@ -22,8 +24,6 @@ export async function AddFoodToMenu(
 ) {
   const id = uuidv4();
   try {
-    const vendorId = req.cookies.id;
-    const verified = req.user;
     const validationResult = createMenuSchema.validate(req.body, options);
     if (validationResult.error) {
       return res.status(400).json({
@@ -330,6 +330,110 @@ export async function getAllVendorDetails(
       err: console.log(err),
       msg: "failed to get record",
       route: "/login",
+    });
+  }
+}
+
+export async function updateVendorRecord(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id } = req.params;
+
+    const validationResult = updateVendorSchema.validate(req.body, options);
+    if (validationResult.error) {
+      return res.status(400).json({
+        Error: validationResult.error.details[0].message,
+      });
+    }
+
+    const record = await VendorsInstance.findOne({ where: { id } });
+    if (!record) {
+      return res.status(404).json({
+        Error: "Cannot find existing vendor",
+      });
+    }
+    const updatedrecord = await record.update({
+      name: req.body.name,
+      ownedBy: req.body.ownedBy,
+      address: req.body.address,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+    });
+    res.status(201).json({
+      message: "Your record has been updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: "failed to update",
+      route: "/updatevendor/:id",
+    });
+  }
+}
+
+export async function updateMenu(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id } = req.params;
+    const validationResult = updateMenuSchema.validate(req.body, options);
+    if (validationResult.error) {
+      return res.status(400).json({
+        Error: validationResult.error.details[0].message,
+      });
+    }
+
+    const record = await MenuInstance.findOne({ where: { id } });
+    if (!record) {
+      return res.status(404).json({
+        Error: "Cannot find specified menu at this time",
+      });
+    }
+    const updatedrecord = await record.update({
+      name: req.body.name,
+      description: req.body.description,
+      image: req.body.image,
+      category: req.body.category,
+      premium: req.body.premium,
+      dayServed: req.body.dayServed,
+      price: req.body.price,
+    });
+    res.status(201).json({
+      message: "Your menu has been updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: "failed to update",
+      route: "/updatemenu/:id",
+    });
+  }
+}
+
+export async function removeMenu(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id } = req.params;
+    const record = await MenuInstance.findOne({ where: { id } });
+    if (!record) {
+      return res.status(404).json({
+        msg: "Cannot find the specified menu",
+      });
+    }
+    const deletedRecord = await record.destroy();
+    res.status(201).json({
+      message: "You have successfully removed this menu",
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: "failed to delete",
+      route: "/deletefood/:id",
     });
   }
 }
