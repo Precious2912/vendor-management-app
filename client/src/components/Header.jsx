@@ -18,14 +18,16 @@ const Header = ({ home, admin, vendor, orders }) => {
     e.preventDefault();
     console.log(e.target.value);
     if (e.target.value) {
-      setSearchInput(true)
+      setSearchInput(true);
     } else {
-      setSearchInput(false)
+      setSearchInput(false);
     }
     // setSearch(e.target.value)
-    const filteredMeals = allMeals.filter((meal) => meal.name.toLowerCase().includes(e.target.value.toLowerCase()))
+    const filteredMeals = allMeals.filter((meal) =>
+      meal.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
     // setAllMeals(filteredMeals);
-    setfiltered(filteredMeals)
+    setfiltered(filteredMeals);
     console.log(filtered);
   };
   const navigate = useNavigate();
@@ -41,38 +43,53 @@ const Header = ({ home, admin, vendor, orders }) => {
         <div className="logo">Sapa Kitchen</div>
       </Link>
       {home && (
-        <div className="search">
-          <AiOutlineSearch size={20} color={"#565656"} />
-          <input
-            type="text"
-            placeholder="Search for a meal"
-            onChange={handleSearch}
-          />
-        </div>
+        <>
+          <div className="search">
+            <AiOutlineSearch size={20} color={"#565656"} />
+            <input
+              type="text"
+              placeholder="Search for a meal"
+              onChange={handleSearch}
+            />
+          </div>
+          <div className="user-actions">
+            <div>
+              <p>Hello {user.fullName.split(" ")[0]} 👋🏼 </p>
+            </div>
+            <button
+              onClick={() => {
+                localStorage.clear();
+                navigate("/login");
+              }}
+            >
+              Logout
+            </button>{" "}
+          </div>
+        </>
       )}
 
-      {admin && 
-      <>
-      <p>Dashboard</p>
-      <div className="user-actions">
-      <div>
-        <p>Hello {user.fullName.split(" ")[0]} 👋🏼 </p>
-      </div>
-      <button
-        onClick={() => {
-          localStorage.clear();
-          navigate("/login");
-        }}
-      >
-        Logout
-      </button>{" "}
-    </div>
-    </>
-      }
-      {vendor && 
-            <>
-            <p>Dashboard</p>
-            <div className="user-actions">
+      {admin && (
+        <>
+          <p>Dashboard</p>
+          <div className="user-actions">
+            <div>
+              <p>Hello {user.fullName.split(" ")[0]} 👋🏼 </p>
+            </div>
+            <button
+              onClick={() => {
+                localStorage.clear();
+                navigate("/login");
+              }}
+            >
+              Logout
+            </button>{" "}
+          </div>
+        </>
+      )}
+      {vendor && (
+        <>
+          <p>Dashboard</p>
+          <div className="user-actions">
             <div>
               <p>Hello {user.name.split(" ")[0]} 👋🏼 </p>
             </div>
@@ -85,10 +102,9 @@ const Header = ({ home, admin, vendor, orders }) => {
               Logout
             </button>{" "}
           </div>
-          </>
-      }
+        </>
+      )}
       {orders && <p>Your Orders</p>}
-
     </HeaderStyle>
   );
 };
