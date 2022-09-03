@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.options = exports.updateOrderStatusSchema = exports.feedbackSchema = exports.verifyVendorSchema = exports.makeOrderSchema = exports.createOrdersSchema = exports.createMenuSchema = exports.vendorsRegisterSchema = exports.adminRegisterSchema = exports.generateToken = exports.vendorLoginSchema = exports.adminLoginSchema = exports.loginSchema = exports.registerSchema = void 0;
+exports.options = exports.updateMenuSchema = exports.updateVendorSchema = exports.updateOrderStatusSchema = exports.feedbackSchema = exports.verifyVendorSchema = exports.makeOrderSchema = exports.createOrdersSchema = exports.createMenuSchema = exports.vendorsRegisterSchema = exports.adminRegisterSchema = exports.generateToken = exports.vendorLoginSchema = exports.adminLoginSchema = exports.loginSchema = exports.registerSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.registerSchema = joi_1.default.object()
@@ -104,6 +104,26 @@ exports.feedbackSchema = joi_1.default.object().keys({
 });
 exports.updateOrderStatusSchema = joi_1.default.object().keys({
     orderStatus: joi_1.default.string().lowercase().required(),
+});
+exports.updateVendorSchema = joi_1.default.object().keys({
+    name: joi_1.default.string().required(),
+    ownedBy: joi_1.default.string().required(),
+    address: joi_1.default.string().required(),
+    email: joi_1.default.string().trim().lowercase().required(),
+    phoneNumber: joi_1.default.string()
+        .length(11)
+        .pattern(/^[0-9]+$/)
+        .required(),
+});
+exports.updateMenuSchema = joi_1.default.object().keys({
+    name: joi_1.default.string().required(),
+    description: joi_1.default.string().required(),
+    image: joi_1.default.string().required(),
+    category: joi_1.default.string().required(),
+    premium: joi_1.default.boolean().required(),
+    dayServed: joi_1.default.string().lowercase().required(),
+    price: joi_1.default.number().required(),
+    vendorId: joi_1.default.string().required(),
 });
 exports.options = {
     abortEarly: false,
