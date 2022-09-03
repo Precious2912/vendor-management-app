@@ -9,8 +9,8 @@ const VendorDashboardPage = () => {
   return (
     <>
       <Header vendor />
-      <FilterToggle vendor />
       <DateNow />
+      <FilterToggle vendor />
       <FoodList />
       <Footer />
     </>

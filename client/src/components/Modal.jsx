@@ -3,10 +3,11 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useRecoilState } from "recoil";
 import { modalActiveState } from "../atoms/vendorAtom";
 import { ModalStyle } from "../styles/ModalStyle";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "../api/axios";
 
 const Modal = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  //   console.log(user);
 
   const [modalActive, setModalActive] = useRecoilState(modalActiveState);
   const [formData, setFormData] = useState({
@@ -19,6 +20,31 @@ const Modal = () => {
     vendorId: user.id,
     dayServed: "",
   });
+  const navigate = useNavigate();
+
+  const token = JSON.parse(localStorage.getItem("token"));
+
+  const handleCreateMeal = async (e) => {
+    try {
+      e.preventDefault();
+      axios
+        .post("/vendors/addFood", formData, {
+          method: "POST",
+          headers: {
+            contentType: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          if (res.status === 201) {
+            console.log(res);
+            setModalActive(false);
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const wrapperRef = useRef(null);
 
@@ -56,13 +82,14 @@ const Modal = () => {
             className="close"
           />
         </div>
-        <form>
+        <form onSubmit={handleCreateMeal}>
           {/* Name of Meal */}
 
           <div className="input">
             <label htmlFor="name">Name</label>
             <input
               type="text"
+              name="name"
               required
               onChange={(e) =>
                 setFormData({
@@ -78,7 +105,7 @@ const Modal = () => {
           <div className="input">
             <label htmlFor="description">Description</label>
             <textarea
-              name=""
+              name="description"
               id=""
               cols="40"
               rows="4"
@@ -98,6 +125,7 @@ const Modal = () => {
             <label htmlFor="name">Image</label>
             <input
               type="text"
+              name="image"
               required
               onChange={(e) =>
                 setFormData({
@@ -110,18 +138,58 @@ const Modal = () => {
 
           {/* Meal Category */}
           <div>
-            <input type="radio" name="category" value="Regular" />
+            <input
+              type="radio"
+              name="category"
+              value="Regular"
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  category: e.target.value,
+                })
+              }
+            />
             <label htmlFor="premium">Breakfast</label>
-            <input type="radio" name="category" value="Premium" />
+            <input
+              type="radio"
+              name="category"
+              value="Premium"
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  category: e.target.value,
+                })
+              }
+            />
             <label htmlFor="premium">Lunch</label>
           </div>
 
           {/* Meal Premium status */}
 
           <div>
-            <input type="radio" name="premium" value="Regular" />
+            <input
+              type="radio"
+              name="premium"
+              value="Regular"
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  premium: Boolean(e.target.value),
+                })
+              }
+            />
             <label htmlFor="premium">Regular</label>
-            <input type="radio" name="premium" value="Premium" />
+            <input
+              type="radio"
+              name="premium"
+              value="Premium"
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  premium: Boolean(e.target.value),
+                })
+              }
+            />
             <label htmlFor="premium">Premium</label>
           </div>
           {/* Meal Price */}
@@ -144,19 +212,27 @@ const Modal = () => {
 
           <div>
             <label htmlFor="name">Day Served</label>
-            <select name="days" id="days" required>
+            <select name="days" id="days" required 
+            onChange={(e) => 
+              setFormData({
+                ...formData, dayServed: e.target.value})}>
+    
               <option value="Monday">Monday</option>
               <option value="Monday">Tuesday</option>
               <option value="Monday">Wednesday</option>
               <option value="Monday">Thursday</option>
               <option value="Monday">Friday</option>
               <option value="Monday">Saturday</option>
-              <option value="Monday">Sunday</option>
+              <option value="Monday">Sunday</option> 
             </select>
           </div>
 
           <div className="action-btns">
-            <button type="submit" className="submit-btn">
+            <button
+              type="submit"
+              className="submit-btn"
+              onSubmit={handleCreateMeal}
+            >
               Create
             </button>
             <button

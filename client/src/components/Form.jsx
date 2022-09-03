@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "../api/axios";
-//import validation from "../utils/validation";
 import { useNavigate, Link } from "react-router-dom";
 import { UseAuth } from "../hooks/UseAuth";
 import { FormStyle } from "../styles/FormStyle";
@@ -29,6 +28,7 @@ const Form = ({
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const { login } = UseAuth();
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -99,9 +99,11 @@ const Form = ({
             password: formData.password,
           })
           .then((res) => {
-            if (res.status === 200) {
+            if (res.status === 201) {
               console.log(res);
               login(res.data.fullName, res.data.id, res.data.token);
+              localStorage.setItem("token", JSON.stringify(res.data.token));
+              localStorage.setItem("user", JSON.stringify(res.data.Admin));
               navigate("/admin/dashboard");
             }
           })
@@ -114,11 +116,14 @@ const Form = ({
           .post("/vendors/login", {
             email: formData.email,
             password: formData.password,
-          })
+          }
+          )
           .then((res) => {
-            if (res.status === 200) {
+            if (res.status === 201) {
               console.log(res);
-              login(res.data.fullName, res.data.id, res.data.token);
+              login(res.data.name, res.data.id, res.data.token);
+              localStorage.setItem("token", JSON.stringify(res.data.token));
+              localStorage.setItem("user", JSON.stringify(res.data.Vendor));
               navigate("/vendor/dashboard");
             }
           })

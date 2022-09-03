@@ -81,7 +81,7 @@ async function authVendor(req, res, next) {
     try {
         const auth = req.headers.authorization;
         if (!auth) {
-            res.status(401).json({
+            return res.status(401).json({
                 Error: "Kindly login from the vendor login page",
             });
         }
