@@ -13,3 +13,14 @@ export const ProtectedRoute = () => {
     <Navigate to="/login" state={{ from: location }} replace />
   );
 };
+
+// export const VendorProtect = () => {
+//   const location = useLocation();
+//   const role = JSON.parse(localStorage.getItem("role"));
+
+//   return role === "vendor" ? (
+//     <Outlet />
+//   ) : (
+//     <Navigate to="vendor/login" state={{ from: location }} replace />
+//   );
+// };

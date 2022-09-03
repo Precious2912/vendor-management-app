@@ -61,4 +61,9 @@ export const ModalStyle = styled.div`
   .action-btns {
     display: flex;
   }
+
+  .meal-category {
+    display: flex;
+    gap: 2rem;
+  }
 `;

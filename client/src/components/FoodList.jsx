@@ -43,7 +43,7 @@ const FoodList = () => {
       {foodListActive && (
         <>
           <div className="actions">
-            <button onClick={() => setModalActive(true)}>
+            <button className="create-a-meal" onClick={() => setModalActive(true)}>
               Create A New Meal
             </button>
           </div>
