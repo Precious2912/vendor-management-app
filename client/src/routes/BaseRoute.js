@@ -12,6 +12,7 @@ import VendorLogin from "../pages/VendorLogin";
 import { AdminDashboard } from "../pages/AdminDashboard";
 import ProductDetailPage from "../pages/ProductDetailPage";
 import VendorDashboardPage from "../pages/VendorDashboardPage";
+import EditMealPage from "../pages/EditMealPage";
 
 export const BaseRoute = () => {
   return (
@@ -30,6 +31,7 @@ export const BaseRoute = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="admin/dashboard" element={<AdminDashboard />} />
         <Route path="vendor/dashboard" element={<VendorDashboardPage />} />
+        <Route path="editFood/:id" element={<EditMealPage />} />
       </Route>
 
       {/* Error Route */}

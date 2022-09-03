@@ -89,7 +89,7 @@ const Modal = () => {
         <div className="heading">
           <h3>Create Meal</h3>
           <AiOutlineClose
-            color={"#cf1919"}
+            color={"#c85c5c"}
             size={35}
             onClick={() => {
               setModalActive(false);
@@ -137,7 +137,7 @@ const Modal = () => {
           {/* Meal Image */}
 
           <div className="input">
-            <label htmlFor="name">Image</label>
+            <label htmlFor="name">Image Link</label>
             <input
               type="text"
               name="image"
@@ -191,7 +191,7 @@ const Modal = () => {
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  premium: Boolean(e.target.value),
+                  premium: e.target.value === "Regular" ? false : true,
                 })
               }
             />
@@ -227,7 +227,7 @@ const Modal = () => {
 
           {/* Day Served */}
 
-          <div>
+          <div className="day-served">
             <label htmlFor="name">Day Served</label>
             <select
               name="days"
@@ -236,13 +236,11 @@ const Modal = () => {
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  dayServed: e.target.value,
+                  dayServed: !e.target.value ? "Monday" : e.target.value,
                 })
               }
             >
-              <option value="Monday" selected>
-                Monday
-              </option>
+              <option value="Monday">Monday</option>
               <option value="Tuesday">Tuesday</option>
               <option value="Wednesday">Wednesday</option>
               <option value="Thursday">Thursday</option>

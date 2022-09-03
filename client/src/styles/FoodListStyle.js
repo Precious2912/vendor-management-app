@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const FoodListStyle = styled.div`
   display: relative;
+
   h3 {
     text-align: center;
   }
@@ -17,6 +18,10 @@ export const FoodListStyle = styled.div`
     outline: inherit;
   }
 
+  .container {
+    display: flex;
+    justify-content: center;
+  }
   .actions {
     display: flex;
     justify-content: center;

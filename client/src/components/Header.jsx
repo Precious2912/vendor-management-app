@@ -53,8 +53,8 @@ const Header = ({ home, admin, vendor, productDetails }) => {
         </div>
       )}
 
-      {admin && <p>Dashboard</p>}
-      {vendor && <p>Dashboard</p>}
+      {admin && <p>Admin Dashboard</p>}
+      {vendor && <p>Vendor Dashboard</p>}
 
       <div className="user-actions">
         <div>

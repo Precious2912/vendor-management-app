@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const currentHour = new Date().getHours();
 
-const MealCard = ({ meal, breakfast }) => {
+const MealCard = ({ meal, breakfast, vendorPage }) => {
   const regularMeals = useRecoilValue(regularMealsState);
   const premiumMeals = useRecoilValue(premiumMealsState);
   const [userOrders, setUserOrders] = useRecoilState(userOrderState);
@@ -21,7 +21,9 @@ const MealCard = ({ meal, breakfast }) => {
         <div
           className="mealCard"
           onClick={() => {
-            navigate(`/product/${meal.id}`);
+            if (!vendorPage) {
+              navigate(`/product/${meal.id}`);
+            }
           }}
         >
           <div className="image-and-select">
@@ -30,6 +32,7 @@ const MealCard = ({ meal, breakfast }) => {
               src={meal.image}
               alt={meal.description}
             />
+
             <button
               className="select-btn"
               disabled={
