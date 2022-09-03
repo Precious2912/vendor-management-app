@@ -3,7 +3,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useRecoilState } from "recoil";
 import { modalActiveState } from "../atoms/vendorAtom";
 import { ModalStyle } from "../styles/ModalStyle";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { toast, ToastContainer } from "react-toastify";
 

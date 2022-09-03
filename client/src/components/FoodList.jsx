@@ -12,6 +12,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import Modal from "./Modal";
 import axios from "../api/axios";
 import VendorMealCard from "./VendorMealCard";
+import { editPageActiveState } from "../atoms/editPageAtom";
 
 const FoodList = () => {
   const vendor = JSON.parse(localStorage.getItem("user"));
@@ -20,6 +21,7 @@ const FoodList = () => {
 
   const foodListActive = useRecoilValue(foodListState);
   const ordersPlacedActive = useRecoilValue(ordersPlacedState);
+  const editPageActive = useRecoilValue(editPageActiveState);
   const [modalActive, setModalActive] = useRecoilState(modalActiveState);
   const [vendorDetails, setVendorDetails] = useState("");
   const [vendorFood, setVendorFood] = useState([]);
@@ -37,7 +39,7 @@ const FoodList = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [editPageActive]);
 
   function useOutsideAlerter(ref) {
     useEffect(() => {
@@ -88,6 +90,3 @@ const FoodList = () => {
 };
 
 export default FoodList;
-
-// AiFillCloseCircle
-// /getAllVendorDetails/:id

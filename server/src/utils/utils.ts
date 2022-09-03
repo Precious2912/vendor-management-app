@@ -120,15 +120,15 @@ export const updateVendorSchema = Joi.object().keys({
 });
 
 export const updateMenuSchema = Joi.object().keys({
-  name: Joi.string().required(),
-  description: Joi.string().required(),
-  image: Joi.string().required(),
-  category: Joi.string().required(),
-  premium: Joi.boolean().required(),
-  dayServed: Joi.string().lowercase().required(),
-  price: Joi.number().required(),
+  name: Joi.string(),
+  description: Joi.string(),
+  image: Joi.string(),
+  category: Joi.string(),
+  premium: Joi.boolean(),
+  dayServed: Joi.string().lowercase(),
+  price: Joi.number(),
 
-  vendorId: Joi.string().required(),
+  vendorId: Joi.string(),
 });
 
 export const options = {

@@ -64,4 +64,57 @@ export const VendorMealCardStyle = styled.div`
   .cancel-btn {
     background-color: #c85c5c;
   }
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+  .mod-container {
+    width: 350px;
+    height: 150px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+  }
+
+  .mod-container form {
+    display: flex;
+    gap: 20px;
+  }
+
+  form .submit {
+    padding: 0.5rem 1rem;
+    background-color: #c85c5c;
+    border-radius: 6px;
+  }
+
+  form .submit:hover {
+    opacity: 0.8;
+  }
+
+  form .cancel {
+    padding: 0.5rem 1rem;
+  }
+
+  .cancel:hover {
+    background-color: #c85c5c;
+    border-radius: 6px;
+    opacity: 0.8;
+  }
+
+  .cancel:active {
+    opacity: 0.6;
+  }
 `;
