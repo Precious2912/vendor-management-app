@@ -42,12 +42,12 @@ export async function AddFoodToMenu(
       vendorId: req.body.vendorId,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       msg: "You have successfully added a food to the menu",
       record: record,
     });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       msg: "failed to create",
       route: "/addfoodtomenu",
     });
