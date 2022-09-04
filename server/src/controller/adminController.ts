@@ -13,6 +13,7 @@ import { VendorsInstance } from "../models/vendors";
 import { MenuInstance } from "../models/menu";
 import { OrderInstance } from "../models/orders";
 import { error } from "console";
+import { UserInstance } from "../models/users";
 
 export async function RegisterAdmin(
   req: Request,
@@ -58,7 +59,7 @@ export async function RegisterAdmin(
       record: record,
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(500).json({
       msg: "failed to register",
       route: "/register",
@@ -225,6 +226,28 @@ export async function getAllVendorDetails(
       err: console.log(err),
       msg: "No record found",
       route: "/getAllVendors",
+    });
+  }
+}
+
+export async function getAllUserDetails(
+  req: Request | any,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const record = (await UserInstance.findAll({
+      include: [{ model: OrderInstance, as: "orders" }],
+    })) as unknown as { [key: string]: string };
+
+    res.status(200).json({
+      record: record,
+    });
+  } catch (err) {
+    res.status(500).json({
+      err: console.log(err),
+      msg: "Users record not found",
+      route: "/getAllUsers",
     });
   }
 }
