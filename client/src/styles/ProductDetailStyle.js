@@ -107,7 +107,8 @@ export const ProductDetailStyle = styled.div`
   .paystack-form {
     width: 30%;
     height: 35%;
-    border: 2px solid #f9975d;
+    background-color: #fbd148;
+    border-radius: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
