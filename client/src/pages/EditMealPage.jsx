@@ -35,6 +35,7 @@ const EditMealPage = () => {
       <Header />
       <DateNow />
       <EditMealPageStyle>
+        <div className="edit-form-container">
         <form>
           <label htmlFor="name">Product Name</label>
           <input
@@ -66,6 +67,14 @@ const EditMealPage = () => {
             name="image"
             onChange={(e) => setProduct({ ...product, image: e.target.value })}
           />
+          <div className="edit-form-btn">
+          <button
+            onClick={() => {
+              navigate("/vendor/dashboard");
+            }}
+          >
+            Go Back
+          </button>
           <button
             type="submit"
             onClick={(e) => {
@@ -88,14 +97,9 @@ const EditMealPage = () => {
           >
             Edit
           </button>
-          <button
-            onClick={() => {
-              navigate("/vendor/dashboard");
-            }}
-          >
-            Go Back
-          </button>
+          </div>
         </form>
+        </div>
       </EditMealPageStyle>
 
       <Footer />

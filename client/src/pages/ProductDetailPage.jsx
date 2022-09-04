@@ -107,30 +107,46 @@ const ProductDetailPage = () => {
         </div>
         {formActive && (
           <div className="paystack-modal">
-            <input
-              type="text"
-              placeholder="Name"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Phone Number"
-              onChange={(e) => setPhone(e.target.value)}
-            />
-            <PaystackButton className="paystack-button" {...componentProps} />
-            <AiOutlineClose
-              color={"#cf1919"}
-              size={35}
-              onClick={() => {
-                setFormActive(false);
-              }}
-              className="close"
-            />
+            <div className="paystack-form">
+              {/* <AiOutlineClose
+                color={"#cf1919"}
+                size={35}
+                onClick={() => {
+                  setFormActive(false);
+                }}
+                className="close"
+              /> */}
+              <input
+                type="text"
+                placeholder="Name"
+                onChange={(e) => setName(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Phone Number"
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              <div className="paystack-btn">
+                <button
+                className="close"
+                  onClick={() => {
+                    setFormActive(false);
+                  }}
+                >
+                  Close
+                </button>
+
+                <PaystackButton
+                  className="paystack-button"
+                  {...componentProps}
+                />
+              </div>
+            </div>
           </div>
         )}
       </ProductDetailStyle>
