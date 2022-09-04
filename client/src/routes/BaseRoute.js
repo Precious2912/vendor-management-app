@@ -28,7 +28,7 @@ export const BaseRoute = () => {
       <Route path="/vendor/login" element={<VendorLogin />}></Route>
       <Route path="product/:id" element={<ProductDetailPage />}></Route>
 
-      {/* Protected Routes */}
+      {/* Protected User Routes */}
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<HomePage />} />
       </Route>

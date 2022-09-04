@@ -5,9 +5,9 @@ import { UseAuth } from "../hooks/UseAuth";
 export const ProtectedRoute = () => {
   const location = useLocation();
   //   const { loggedIn } = UseAuth();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const role = JSON.parse(localStorage.getItem("role"));
 
-  return user ? (
+  return role === "user" ? (
     <Outlet />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
