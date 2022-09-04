@@ -37,10 +37,10 @@ const MealCard = ({ meal, breakfast, vendorPage }) => {
               className="select-btn"
               disabled={
                 breakfast
-                  ? currentHour > 9
+                  ? currentHour > 9 && currentHour < 14
                     ? true
                     : false
-                  : currentHour > 9
+                  : currentHour > 9 && currentHour < 14
                   ? false
                   : true
               }

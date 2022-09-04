@@ -13,6 +13,8 @@ import { AdminDashboard } from "../pages/AdminDashboard";
 import ProductDetailPage from "../pages/ProductDetailPage";
 import VendorDashboardPage from "../pages/VendorDashboardPage";
 import EditMealPage from "../pages/EditMealPage";
+import { ProtectedVendorRoute } from "./VendorRoute";
+import { ProtectedAdminRoute } from "./AdminRoute";
 
 export const BaseRoute = () => {
   return (
@@ -29,9 +31,16 @@ export const BaseRoute = () => {
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="admin/dashboard" element={<AdminDashboard />} />
+      </Route>
+
+      {/* Protected Vendor Route */}
+      <Route element={<ProtectedVendorRoute />}>
         <Route path="vendor/dashboard" element={<VendorDashboardPage />} />
         <Route path="editFood/:id" element={<EditMealPage />} />
+      </Route>
+      {/* Protected Admin Route */}
+      <Route element={<ProtectedAdminRoute />}>
+        <Route path="admin/dashboard" element={<AdminDashboard />} />
       </Route>
 
       {/* Error Route */}
