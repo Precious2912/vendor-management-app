@@ -38,17 +38,15 @@ export const HomePage = () => {
   const premiumMeals = useRecoilValue(premiumMealsState);
   const yourOrders = useRecoilValue(yourOrderStates);
   const [userOrders, setUserOrders] = useRecoilState(userOrderState);
-  // eslint-disable-next-line no-unused-vars
   const [allMeals, setAllMeals] = useRecoilState(AllMealsState);
   const [breakfasts, setBreakfasts] = useRecoilState(BreakfastState);
   const [Lunches, setLunches] = useRecoilState(LunchState);
-
   const [premiumBreakfasts, setPremiumBreakfasts] = useRecoilState(
     premiumBreakfastsState
   );
   const [premiumLunches, setPremiumLunches] =
     useRecoilState(premiumLunchesState);
-
+console.log(userOrders)
   // const [userOrder, setUserOrders] = useRecoilState(userOrderState)
   const [filter, setfilter] = useRecoilState(filteredMealsState);
   const searchInput = useRecoilValue(searchInputState);
@@ -134,11 +132,10 @@ export const HomePage = () => {
         );
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [filter]);
 
-  // console.log(allMeals);
-  // console.log(premiumLunches);
+
 
   return (
     <HomeStyle>
@@ -157,7 +154,7 @@ export const HomePage = () => {
           <Meals premiumLunch={premiumLunches} />
         </>
       )}
-      {/* {yourOrders && <MealCard meal={userOrder}/>} */}
+      {yourOrders && "your orders"}
       <Footer />
     </HomeStyle>
   );
