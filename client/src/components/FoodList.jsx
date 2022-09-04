@@ -17,7 +17,7 @@ import { editPageActiveState } from "../atoms/editPageAtom";
 const FoodList = () => {
   const vendor = JSON.parse(localStorage.getItem("user"));
 
-  // console.log(vendor.id);
+  
 
   const foodListActive = useRecoilValue(foodListState);
   const ordersPlacedActive = useRecoilValue(ordersPlacedState);
@@ -26,7 +26,6 @@ const FoodList = () => {
   const [vendorDetails, setVendorDetails] = useState("");
   const [vendorFood, setVendorFood] = useState([]);
 
-  // console.log(vendorFood.map((food) => food.name));
   const wrapperRef = useRef(null);
 
   useEffect(() => {

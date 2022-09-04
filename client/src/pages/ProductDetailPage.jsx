@@ -10,15 +10,26 @@ import { PaystackButton } from "react-paystack";
 import { PaysackModalState } from "../atoms/PayStackModalAtom";
 import { useRecoilState } from "recoil";
 import { AiOutlineClose } from "react-icons/ai";
+import { userOrderState } from "../atoms/userAtom";
+import {
+  premiumMealsState,
+  regularMealsState,
+  yourOrderStates,
+} from "../atoms/mealAtom";
 
 const ProductDetailPage = () => {
+  const [regularMeals, setRegularMeals] = useRecoilState(regularMealsState);
+  const [premiumMeals, setPremiumMeals] = useRecoilState(premiumMealsState);
+  const [yourOrders, setOrders] = useRecoilState(yourOrderStates);
   const [product, setProduct] = useState({});
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [formActive, setFormActive] = useRecoilState(PaysackModalState);
   const navigate = useNavigate();
+  const [userOrders, setUserOrders] = useRecoilState(userOrderState);
 
+  console.log(userOrders);
   const publicKey = "pk_test_6cd7dc181e5cdc9a9a8247231b880642aaf6fd59";
 
   const componentProps = {
@@ -73,7 +84,17 @@ const ProductDetailPage = () => {
             </button>
           )}
           {!product.premium && (
-            <button className="btn confirm">Book Your meal</button>
+            <button
+              className="btn confirm"
+              onClick={() => {
+                setOrders(true);
+                setPremiumMeals(false);
+                setRegularMeals(false);
+                navigate(`/`);
+              }}
+            >
+              Book Your meal
+            </button>
           )}
           <button
             className="btn cancel"
@@ -86,30 +107,46 @@ const ProductDetailPage = () => {
         </div>
         {formActive && (
           <div className="paystack-modal">
-            <input
-              type="text"
-              placeholder="Name"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Phone Number"
-              onChange={(e) => setPhone(e.target.value)}
-            />
-            <PaystackButton className="paystack-button" {...componentProps} />
-            <AiOutlineClose
-              color={"#cf1919"}
-              size={35}
-              onClick={() => {
-                setFormActive(false);
-              }}
-              className="close"
-            />
+            <div className="paystack-form">
+              {/* <AiOutlineClose
+                color={"#cf1919"}
+                size={35}
+                onClick={() => {
+                  setFormActive(false);
+                }}
+                className="close"
+              /> */}
+              <input
+                type="text"
+                placeholder="Name"
+                onChange={(e) => setName(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Phone Number"
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              <div className="paystack-btn">
+                <button
+                className="close"
+                  onClick={() => {
+                    setFormActive(false);
+                  }}
+                >
+                  Close
+                </button>
+
+                <PaystackButton
+                  className="paystack-button"
+                  {...componentProps}
+                />
+              </div>
+            </div>
           </div>
         )}
       </ProductDetailStyle>

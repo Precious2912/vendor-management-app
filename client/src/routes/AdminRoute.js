@@ -1,15 +1,14 @@
 import React from "react";
 import { useLocation, Navigate, Outlet } from "react-router-dom";
-import { UseAuth } from "../hooks/UseAuth";
 
-export const ProtectedRoute = () => {
+export const ProtectedAdminRoute = () => {
   const location = useLocation();
-  //   const { loggedIn } = UseAuth();
+
   const role = JSON.parse(localStorage.getItem("role"));
 
-  return role === "user" ? (
+  return role === "admin" ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+    <Navigate to="/vendor/login" state={{ from: location }} replace />
   );
 };
