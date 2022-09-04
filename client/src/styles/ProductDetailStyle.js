@@ -65,6 +65,19 @@ export const ProductDetailStyle = styled.div`
     display: flex;
     gap: 1rem;
   }
+
+  .actions .confirm {
+    background-color: #f9975d;
+  }
+
+  .actions .confirm:hover {
+    opacity: 0.8;
+  }
+
+  .actions .confirm:active {
+    opacity: 0.6;
+  }
+
   .btn {
     padding: 0.5rem 1rem;
     border-radius: 5px;
@@ -134,8 +147,5 @@ export const ProductDetailStyle = styled.div`
     margin: 0.5rem;
     border-radius: 1rem;
   }
-
-
-
 
 `;

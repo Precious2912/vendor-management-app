@@ -268,23 +268,39 @@ const Form = ({
           </Link>
         </h4>
       ) : (
-        <h4>
-          Don't have an account? Sign Up{" "}
-          <Link
-            to={
-              UserLogin
-                ? "/register"
-                : AdminLogin
-                ? "/admin/register"
-                : VendorLogin
-                ? "/vendor/register"
-                : ""
-            }
-            className="link"
-          >
-            HERE{" "}
-          </Link>
-        </h4>
+        <>
+          <h4>
+            Don't have an account? Sign Up{" "}
+            <Link
+              to={
+                UserLogin
+                  ? "/register"
+                  : AdminLogin
+                  ? "/admin/register"
+                  : VendorLogin
+                  ? "/vendor/register"
+                  : ""
+              }
+              className="link"
+            >
+              HERE{" "}
+            </Link>
+          </h4>
+          {UserLogin && (
+            <h4>
+              <Link to={UserLogin ? "/vendor/login" : ""} className="link">
+                Sign in as a Vendor
+              </Link>
+            </h4>
+          )}
+          {VendorLogin && (
+            <h4>
+              <Link to={VendorLogin ? "/login" : ""} className="link">
+                Sign in as a User
+              </Link>
+            </h4>
+          )}
+        </>
       )}
     </FormStyle>
   );

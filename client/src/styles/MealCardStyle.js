@@ -78,6 +78,27 @@ export const MealCardStyle = styled.div`
     font-weight: 600;
     color: #c85c5c;
   }
+
+  .select-and-view {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .view-btn {
+    border: 1px solid black;
+    padding: 0.5rem 1rem;
+    border-radius: 0.7rem;
+    transition: ease-in-out 0.15s;
+  }
+
+  .view-btn:hover {
+    background-color: var(--secondary-color);
+    border: 1px solid transparent;
+  }
+  .view-btn:active {
+    opacity: 0.6;
+  }
 `;
 
 //c85c5c

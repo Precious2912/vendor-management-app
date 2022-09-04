@@ -1,6 +1,10 @@
 import React from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { premiumMealsState, regularMealsState } from "../atoms/mealAtom";
+import {
+  premiumMealsState,
+  regularMealsState,
+  yourOrderStates,
+} from "../atoms/mealAtom";
 import { userOrderState } from "../atoms/userAtom";
 import { MealCardStyle } from "../styles/MealCardStyle";
 import { useNavigate } from "react-router-dom";
@@ -8,8 +12,9 @@ import { useNavigate } from "react-router-dom";
 const currentHour = new Date().getHours();
 
 const MealCard = ({ meal, breakfast, vendorPage }) => {
-  const regularMeals = useRecoilValue(regularMealsState);
-  const premiumMeals = useRecoilValue(premiumMealsState);
+  const [regularMeals, setRegularMeals] = useRecoilState(regularMealsState);
+  const [premiumMeals, setPremiumMeals] = useRecoilState(premiumMealsState);
+  const [yourOrders, setOrders] = useRecoilState(yourOrderStates);
   const [userOrders, setUserOrders] = useRecoilState(userOrderState);
 
   const navigate = useNavigate();
@@ -22,7 +27,7 @@ const MealCard = ({ meal, breakfast, vendorPage }) => {
           className="mealCard"
           onClick={() => {
             if (!vendorPage) {
-              navigate(`/product/${meal.id}`);
+              // navigate(`/product/${meal.id}`);
             }
           }}
         >
@@ -32,24 +37,38 @@ const MealCard = ({ meal, breakfast, vendorPage }) => {
               src={meal.image}
               alt={meal.description}
             />
-
-            <button
-              className="select-btn"
-              disabled={
-                breakfast
-                  ? currentHour > 9
-                    ? true
-                    : false
-                  : currentHour > 9
-                  ? false
-                  : true
-              }
-              onClick={() => {
-                setUserOrders([meal]);
-              }}
-            >
-              Select
-            </button>
+            <div className="select-and-view">
+              <button
+                className="select-btn"
+                disabled={
+                  breakfast
+                    ? currentHour > 9 && currentHour < 14
+                      ? true
+                      : false
+                    : currentHour > 9 && currentHour < 14
+                    ? false
+                    : true
+                }
+                onClick={() => {
+                  if (breakfast) {
+                    setUserOrders({ ...userOrders, breakfast: meal });
+                  } else {
+                    setUserOrders({ ...userOrders, lunch: meal });
+                  }
+                  setOrders(true);
+                  setPremiumMeals(false);
+                  setRegularMeals(false);
+                }}
+              >
+                Select
+              </button>
+              <button
+                className="view-btn"
+                onClick={() => navigate(`/product/${meal.id}`)}
+              >
+                View Meal
+              </button>
+            </div>
           </div>
           <h4>{meal.name}</h4>
           <p>{meal.description}</p>
@@ -70,23 +89,36 @@ const MealCard = ({ meal, breakfast, vendorPage }) => {
                 src={meal.image}
                 alt={meal.description}
               />
-              <button
-                className="select-btn"
-                disabled={
-                  breakfast
-                    ? currentHour > 9 && currentHour < 14
-                      ? true
-                      : false
-                    : currentHour > 9 && currentHour < 14
-                    ? false
-                    : true
-                }
-                onClick={() => {
-                  setUserOrders([meal]);
-                }}
-              >
-                Pay for Meal
-              </button>
+              <div className="select-and-view">
+                <button
+                  className="select-btn"
+                  disabled={
+                    breakfast
+                      ? currentHour > 9 && currentHour < 14
+                        ? true
+                        : false
+                      : currentHour > 9 && currentHour < 14
+                      ? false
+                      : true
+                  }
+                  onClick={() => {
+                    if (breakfast) {
+                      setUserOrders({ ...userOrders, breakfast: meal });
+                    } else {
+                      setUserOrders({ ...userOrders, lunch: meal });
+                    }
+                    setUserOrders([meal]);
+                  }}
+                >
+                  Pay for Meal
+                </button>
+                <button
+                  className="view-btn"
+                  onClick={() => navigate(`/product/${meal.id}`)}
+                >
+                  View Meal
+                </button>
+              </div>
             </div>
             <div className="name-and-price">
               <h4>{meal.name}</h4>

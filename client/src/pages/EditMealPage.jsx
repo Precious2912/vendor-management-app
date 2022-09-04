@@ -23,12 +23,6 @@ const EditMealPage = () => {
   };
 
   const { name, description, price, image } = product;
-  //   const [reqBody, setReqBody] = useState({
-  //     name: product.name,
-  //     description: product.description,
-  //     price: product.price,
-  //     image: product.image,
-  //   });
 
   useEffect(() => {
     axios.get(`/users/getOneMeal/${id}`).then((res) => {
