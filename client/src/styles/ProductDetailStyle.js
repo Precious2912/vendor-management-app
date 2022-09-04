@@ -83,10 +83,59 @@ export const ProductDetailStyle = styled.div`
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.65);
+    background-color: rgba(0, 0, 0, 0.75);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
+    
   }
+
+  .paystack-form {
+    width: 30%;
+    height: 35%;
+    border: 2px solid #f9975d;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .paystack-form input {
+    display: block;
+    width: 20rem;
+    height: 4vh;
+    margin: 1rem;
+    outline: none;
+    padding-left: 1rem;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .paystack-btn {
+    width: 80%;
+    display: flex;
+    justify-content: space-evenly;
+    color: #fff
+  }
+
+  .paystack-button {
+    width: 30%;
+    background-color: green;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border-radius: 1rem;
+
+  }
+  .close {
+    width: 30%;
+    background-color: red;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border-radius: 1rem;
+  }
+
+
+
+
 `;
