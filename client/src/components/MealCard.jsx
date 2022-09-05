@@ -8,6 +8,7 @@ import {
 import { userOrderState } from "../atoms/userAtom";
 import { MealCardStyle } from "../styles/MealCardStyle";
 import { useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 
 const currentHour = new Date().getHours();
 
@@ -19,6 +20,9 @@ const MealCard = ({ meal, breakfast, vendorPage }) => {
 
   const navigate = useNavigate();
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  // console.log({ user });
+  // console.log({ meal });
   // console.log(userOrders);
   return (
     <MealCardStyle>
@@ -40,15 +44,6 @@ const MealCard = ({ meal, breakfast, vendorPage }) => {
             <div className="select-and-view">
               <button
                 className="select-btn"
-                disabled={
-                  breakfast
-                    ? currentHour > 9 && currentHour < 14
-                      ? true
-                      : false
-                    : currentHour > 9 && currentHour < 14
-                    ? false
-                    : true
-                }
                 onClick={() => {
                   if (breakfast) {
                     setUserOrders({ ...userOrders, breakfast: meal });
@@ -58,6 +53,15 @@ const MealCard = ({ meal, breakfast, vendorPage }) => {
                   setOrders(true);
                   setPremiumMeals(false);
                   setRegularMeals(false);
+                  axios
+                    .post("/users/createOrders", {
+                      userId: user.id,
+                      foodId: meal.id,
+                      vendorId: meal.vendorId,
+                    })
+                    .then((res) => {
+                      console.log(res);
+                    });
                 }}
               >
                 Select
@@ -92,22 +96,13 @@ const MealCard = ({ meal, breakfast, vendorPage }) => {
               <div className="select-and-view">
                 <button
                   className="select-btn"
-                  disabled={
-                    breakfast
-                      ? currentHour > 9 && currentHour < 14
-                        ? true
-                        : false
-                      : currentHour > 9 && currentHour < 14
-                      ? false
-                      : true
-                  }
                   onClick={() => {
                     if (breakfast) {
                       setUserOrders({ ...userOrders, breakfast: meal });
                     } else {
                       setUserOrders({ ...userOrders, lunch: meal });
                     }
-                    setUserOrders([meal]);
+                    // setUserOrders([meal]);
                   }}
                 >
                   Pay for Meal
@@ -133,3 +128,13 @@ const MealCard = ({ meal, breakfast, vendorPage }) => {
 };
 
 export default MealCard;
+
+//  disabled={
+//                   breakfast
+//                     ? currentHour > 9 && currentHour < 14
+//                       ? true
+//                       : false
+//                     : currentHour > 9 && currentHour < 14
+//                     ? false
+//                     : true
+//                 }

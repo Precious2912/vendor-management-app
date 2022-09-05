@@ -36,6 +36,7 @@ async function AddFoodToMenu(req, res, next) {
         });
     }
     catch (err) {
+        console.log(err);
         return res.status(500).json({
             msg: "failed to create",
             route: "/addfoodtomenu",
