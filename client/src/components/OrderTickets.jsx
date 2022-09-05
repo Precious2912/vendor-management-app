@@ -5,6 +5,7 @@ import { OrderTicketStyle } from "../styles/OrderTicketStyle";
 
 const OrderTickets = ({ order }) => {
   const [meal, setMeal] = useState({});
+  const [commentOn, setCommentOn] = useState(false);
 
   useEffect(() => {
     axios.get(`/users/getOneMeal/${order.foodId}`).then((res) => {
@@ -14,6 +15,7 @@ const OrderTickets = ({ order }) => {
   }, []);
 
   const dateCreated = new Date(order.createdAt);
+  //   console.log(dateCreated.getHours());
   return (
     <OrderTicketStyle>
       <p>
@@ -28,6 +30,13 @@ const OrderTickets = ({ order }) => {
       <p>
         Time Ordered: <span>{dateCreated.toLocaleString()}</span>
       </p>
+      <button onClick={() => setCommentOn(true)}>Add a feedback</button>
+      {commentOn && (
+        <form action="">
+          <input type="text" />
+          <button onClick={() => setCommentOn(false)}>Submit Comment</button>
+        </form>
+      )}
     </OrderTicketStyle>
   );
 };

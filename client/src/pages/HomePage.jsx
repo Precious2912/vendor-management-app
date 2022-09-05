@@ -166,8 +166,8 @@ export const HomePage = () => {
       )}
       {yourOrders &&
         fetchedUserOrders.map((order) => (
-          <div className="your-orders-container">
-            <OrderTickets key={order.id} order={order} />
+          <div className="your-orders-container" key={order.id}>
+            <OrderTickets order={order} />
           </div>
         ))}
       <Footer />
