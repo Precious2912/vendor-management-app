@@ -101,12 +101,11 @@ export const ProductDetailStyle = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 100;
-    
   }
 
   .paystack-form {
     width: 30%;
-    height: 35%;
+    height: 50%;
     background-color: #fbd148;
     border-radius: 1.5rem;
     display: flex;
@@ -130,7 +129,7 @@ export const ProductDetailStyle = styled.div`
     width: 80%;
     display: flex;
     justify-content: space-evenly;
-    color: #fff
+    color: #fff;
   }
 
   .paystack-button {
@@ -139,7 +138,6 @@ export const ProductDetailStyle = styled.div`
     padding: 0.5rem;
     margin: 0.5rem;
     border-radius: 1rem;
-
   }
   .close {
     width: 30%;
@@ -148,5 +146,4 @@ export const ProductDetailStyle = styled.div`
     margin: 0.5rem;
     border-radius: 1rem;
   }
-
 `;

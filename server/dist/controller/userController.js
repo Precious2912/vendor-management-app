@@ -177,6 +177,11 @@ async function getOneMealDetail(req, res, next) {
         const record = await menu_1.MenuInstance.findOne({
             where: { id: mealId },
         });
+        if (!record) {
+            return res.status(404).json({
+                msg: "Meal not found",
+            });
+        }
         res.status(200).json({
             record: record,
         });

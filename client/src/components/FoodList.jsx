@@ -17,8 +17,6 @@ import { editPageActiveState } from "../atoms/editPageAtom";
 const FoodList = () => {
   const vendor = JSON.parse(localStorage.getItem("user"));
 
-  
-
   const foodListActive = useRecoilValue(foodListState);
   const ordersPlacedActive = useRecoilValue(ordersPlacedState);
   const editPageActive = useRecoilValue(editPageActiveState);
@@ -38,7 +36,7 @@ const FoodList = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [editPageActive]);
+  }, []);
 
   function useOutsideAlerter(ref) {
     useEffect(() => {

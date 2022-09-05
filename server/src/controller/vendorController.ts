@@ -47,6 +47,7 @@ export async function AddFoodToMenu(
       record: record,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       msg: "failed to create",
       route: "/addfoodtomenu",

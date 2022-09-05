@@ -82,7 +82,6 @@ const Form = ({
             }
           })
           .catch((err) => {
-            console.log(err.response.data.msg);
             if (
               err.response.data.msg ===
               "Email is used, please enter another email"

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DateNow from "../components/DateNow";
 import FilterToggle from "../components/FilterToggle";
 import Footer from "../components/Footer";
@@ -20,6 +20,7 @@ import axios from "../api/axios";
 import MealCard from "../components/MealCard";
 import { userOrderState } from "../atoms/userAtom";
 import { filteredMealsState, searchInputState } from "../atoms/filteredMeals";
+import OrderTickets from "../components/OrderTickets";
 
 const dayOfTheWeek = new Date().getDay();
 
@@ -38,6 +39,7 @@ export const HomePage = () => {
   const premiumMeals = useRecoilValue(premiumMealsState);
   const yourOrders = useRecoilValue(yourOrderStates);
   const [userOrders, setUserOrders] = useRecoilState(userOrderState);
+  const [fetchedUserOrders, setFetchedUserOrders] = useState([]);
   const [allMeals, setAllMeals] = useRecoilState(AllMealsState);
   const [breakfasts, setBreakfasts] = useRecoilState(BreakfastState);
   const [Lunches, setLunches] = useRecoilState(LunchState);
@@ -46,10 +48,12 @@ export const HomePage = () => {
   );
   const [premiumLunches, setPremiumLunches] =
     useRecoilState(premiumLunchesState);
-console.log(userOrders)
-  // const [userOrder, setUserOrders] = useRecoilState(userOrderState)
+  // console.log(userOrders);
+
   const [filter, setfilter] = useRecoilState(filteredMealsState);
   const searchInput = useRecoilValue(searchInputState);
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     axios.get("/getallfood").then((res) => {
@@ -132,10 +136,16 @@ console.log(userOrders)
         );
       }
     });
-
   }, [filter]);
 
+  useEffect(() => {
+    axios.get(`/users/getOrders/${user.id}`).then((res) => {
+      // console.log(res);
+      setFetchedUserOrders(res.data.record.orders);
+    });
+  }, [userOrders]);
 
+  // console.log({ fetchedUserOrders });
 
   return (
     <HomeStyle>
@@ -154,7 +164,12 @@ console.log(userOrders)
           <Meals premiumLunch={premiumLunches} />
         </>
       )}
-      {yourOrders && "your orders"}
+      {yourOrders &&
+        fetchedUserOrders.map((order) => (
+          <div className="your-orders-container">
+            <OrderTickets key={order.id} order={order} />
+          </div>
+        ))}
       <Footer />
     </HomeStyle>
   );
