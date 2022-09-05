@@ -9,6 +9,6 @@ export const ProtectedAdminRoute = () => {
   return role === "admin" ? (
     <Outlet />
   ) : (
-    <Navigate to="/vendor/login" state={{ from: location }} replace />
+    <Navigate to="/admin/login" state={{ from: location }} replace />
   );
 };
