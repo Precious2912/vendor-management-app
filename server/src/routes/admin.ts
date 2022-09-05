@@ -7,6 +7,7 @@ import {
   getOneVendorDetails,
   getAllVendorDetails,
   removeVendor,
+  getAllUserDetails,
 } from "../controller/adminController";
 import { authAdmin } from "../middleware/auth";
 
@@ -20,4 +21,5 @@ router.patch("/verifyvendor/:id", authAdmin, verifyVendor);
 router.get("/getOneVendor/:id", getOneVendorDetails);
 router.get("/getAllVendors", getAllVendorDetails);
 router.get("/removeVendor", removeVendor);
+router.get("/getAllUsers", getAllUserDetails);
 export default router;
